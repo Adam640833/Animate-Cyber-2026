@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animate Cyber - Behavioral Operating System for Cybersecurity Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Mono:wght@400;700&family=Work+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #4A9DBD;
+            --primary-dark: #2C7A99;
+            --primary-light: #6DB5D4;
+            --dark: #0F1419;
+            --dark-blue: #1A2332;
+            --accent: #5FB4D4;
+            --accent-warm: #E8945F;
+            --text-dark: #1A1A1A;
+            --text-light: #FFFFFF;
+            --bg-light: #F8F9FA;
+            --border: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Work Sans', -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--dark);
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-light);
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-decoration: none;
+            font-family: 'Space Mono', monospace;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            position: relative;
+        }
+
+        .logo span {
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-weight: 500;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section with Rotating Messages */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-blue) 100%);
+            color: var(--text-light);
+            padding: 10rem 2rem 6rem;
+            margin-top: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 30%, rgba(74, 157, 189, 0.05) 50%, transparent 70%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.02) 2px, rgba(255,255,255,0.02) 4px);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .audience-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .audience-tab {
+            padding: 0.8rem 1.8rem;
+            background: rgba(255,255,255,0.08);
+            border: 2px solid transparent;
+            border-radius: 50px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .audience-tab:hover {
+            background: rgba(255,255,255,0.12);
+            color: var(--text-light);
+        }
+
+        .audience-tab.active {
+            background: var(--primary);
+            border-color: var(--primary-light);
+            color: var(--text-light);
+            box-shadow: 0 0 20px rgba(74, 157, 189, 0.4);
+        }
+
+        .hero-message {
+            display: none;
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero-message.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero .subheadline {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            opacity: 0.95;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--text-light);
+            padding: 1.2rem 3rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-light);
+            border-color: var(--text-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(74, 157, 189, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--text-light);
+            margin-left: 1rem;
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--text-light);
+            color: var(--dark);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--dark);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            font-weight: 300;
+        }
+
+        /* The Problem Section */
+        .problem-section {
+            background: white;
+            position: relative;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .problem-content h3 {
+            color: var(--primary-dark);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .problem-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .problem-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .problem-list li::before {
+            content: '⚠️';
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .stat-highlight {
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE5E5 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-warm);
+            margin: 2rem 0;
+        }
+
+        .stat-highlight .stat {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent-warm);
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Personas Section */
+        .personas {
+            background: var(--bg-light);
+        }
+
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 3rem;
+        }
+
+        .personas-grid.secondary {
+            grid-template-columns: repeat(2, 1fr);
+            margin-top: 3rem;
+        }
+
+        .persona-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .persona-card.primary {
+            border-left-width: 8px;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            border-left-color: var(--accent);
+        }
+
+        .persona-card .role-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .persona-card h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .persona-card .persona-role {
+            color: var(--primary);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .persona-section {
+            margin: 1.5rem 0;
+        }
+
+        .persona-section strong {
+            color: var(--dark);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .persona-section.highlight {
+            background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .persona-section ul {
+            margin: 0.5rem 0 0 1.5rem;
+            list-style-type: none;
+        }
+
+        .persona-section ul li {
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .persona-section ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: white;
+        }
+
+        .workflow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .workflow-step {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .workflow-step:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .workflow-step::after {
+            content: '→';
+            position: absolute;
+            right: -2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .workflow-step h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .workflow-step .step-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .screenshot-placeholder {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-blue) 100%);
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            margin: 3rem 0;
+            text-align: center;
+            color: white;
+            border: 3px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screenshot-placeholder::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(74, 157, 189, 0.1) 10px,
+                rgba(74, 157, 189, 0.1) 20px
+            );
+        }
+
+        .screenshot-placeholder h4 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .screenshot-placeholder p {
+            opacity: 0.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Success Stories */
+        .success-stories {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-blue) 100%);
+            color: white;
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .story-card {
+            background: rgba(255,255,255,0.08);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .story-card:hover {
+            background: rgba(255,255,255,0.12);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .story-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.2rem;
+            overflow: hidden;
+            padding: 0.35rem;
+        }
+
+        .story-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .story-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .story-quote {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            font-style: italic;
+            opacity: 0.95;
+            margin: 1rem 0;
+        }
+
+        .story-highlight {
+            background: rgba(95, 180, 212, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Contact form */
+        .contact-form {
+            max-width: 700px;
+            margin: 2rem auto 0;
+            text-align: left;
+        }
+        .contact-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .contact-form .form-row.single {
+            grid-template-columns: 1fr;
+        }
+        .contact-form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: white;
+        }
+        .contact-form label .required {
+            color: #ffb3b3;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: rgba(255,255,255,0.2);
+        }
+        .contact-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .contact-form .form-submit {
+            margin-top: 1.5rem;
+        }
+        .contact-form .form-submit button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'IBM Plex Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .contact-form .form-submit button:hover {
+            background: var(--bg-light);
+            transform: translateY(-1px);
+        }
+
+        /* Workflow Shift Section */
+        .workflow-shift-section {
+            background: var(--bg-light);
+            padding: 6rem 2rem;
+        }
+
+        .workflow-shift-tabs {
+            display: flex;
+            gap: 0;
+            justify-content: center;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .workflow-shift-tab {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid var(--border);
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 1rem;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .workflow-shift-tab:first-child {
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .workflow-shift-tab:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .workflow-shift-tab:hover {
+            background: #f8f9fa;
+            color: var(--dark);
+        }
+
+        .workflow-shift-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .workflow-shift-panel {
+            display: none;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        .workflow-shift-panel.active {
+            display: block;
+        }
+
+        .workflow-shift-panel.without .phase-card {
+            border-left-color: var(--accent-warm);
+            background: linear-gradient(135deg, #FFF9F7 0%, #FFF5F0 100%);
+        }
+
+        .workflow-shift-panel.with .phase-card {
+            border-left-color: var(--primary);
+            background: linear-gradient(135deg, #F0F9FF 0%, #E8F6FC 100%);
+        }
+
+        .workflow-shift-phases {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto 4rem;
+        }
+
+        .phase-card {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            border-left-width: 5px;
+            transition: all 0.3s;
+        }
+
+        .phase-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .phase-graphic {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            opacity: 0.9;
+            transition: transform 0.3s ease;
+        }
+
+        .phase-card:hover .phase-graphic {
+            transform: scale(1.08);
+        }
+
+        .phase-graphic svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .workflow-shift-panel.without .phase-graphic {
+            color: var(--accent-warm);
+        }
+
+        .workflow-shift-panel.with .phase-graphic {
+            color: var(--primary);
+        }
+
+        .phase-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .phase-card ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .phase-card li {
+            padding: 0.6rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+        }
+
+        .phase-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .workflow-shift-panel.without .phase-card li::before {
+            color: var(--accent-warm);
+        }
+
+        .workflow-shift-panel.with .phase-card li::before {
+            color: var(--primary);
+        }
+
+        .phase-card li strong {
+            color: var(--dark);
+        }
+
+        .value-shift-table {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .value-shift-table th,
+        .value-shift-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+
+        .value-shift-table th {
+            background: var(--dark);
+            color: white;
+            font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .value-shift-table tr:nth-child(even) {
+            background: var(--bg-light);
+        }
+
+        .value-shift-table tr:hover {
+            background: rgba(74, 157, 189, 0.08);
+        }
+
+        .value-shift-table td:first-child {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .value-shift-table .traditional {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .value-shift-table .animate {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--text-light);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.8;
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .problem-grid,
+            .workflow-steps,
+            .workflow-shift-phases {
+                grid-template-columns: 1fr;
+            }
+
+            .personas-grid,
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-step::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .value-shift-table th,
+            .value-shift-table td {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .workflow-shift-tabs {
+                flex-direction: column;
+            }
+
+            .workflow-shift-tab:first-child {
+                border-right: 2px solid var(--border);
+                border-bottom: 1px solid var(--border);
+                border-radius: 8px 8px 0 0;
+            }
+
+            .workflow-shift-tab:last-child {
+                border-radius: 0 0 8px 8px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subheadline {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .audience-tabs {
+                flex-direction: column;
+            }
+
+            .cta-button.secondary {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Hide sections initially */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo" onclick="showSection('home')">
+                <img src="assets/logo-nav.png" alt="Animate Cyber" class="logo-icon">
+                <span>Animate Cyber</span>
+            </a>
+            <ul>
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('personas')">Who We Serve</a></li>
+                <li><a onclick="showSection('how-it-works')">How It Works</a></li>
+                <li><a onclick="showSection('success')">Proven Impact</a></li>
+                <li><a onclick="showSection('contact')" style="background: var(--primary); padding: 0.6rem 1.5rem; border-radius: 4px;">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home" class="content-section active">
+        <section class="hero">
+            <div class="hero-content">
+                <!-- Audience Selection Tabs -->
+                <div class="audience-tabs">
+                    <div class="audience-tab active" data-audience="operators" onclick="switchAudience('operators')">
+                        Range Operators
+                    </div>
+                    <div class="audience-tab" data-audience="managers" onclick="switchAudience('managers')">
+                        Program Managers
+                    </div>
+                    <div class="audience-tab" data-audience="cisos" onclick="switchAudience('cisos')">
+                        Security Leaders
+                    </div>
+                </div>
+
+                <!-- Range Operators Message -->
+                <div class="hero-message active" id="message-operators">
+                    <h1>Stop Writing Scripts for <span>Network Traffic</span></h1>
+                    <p class="subheadline">Select the behaviors you want. Build your scenario. Execute your intended content.</p>
+                    <div>
+                        <a class="cta-button" onclick="showSection('contact')">Schedule a Pilot</a>
+                        <a class="cta-button secondary" onclick="showSection('how-it-works')">See How It Works</a>
+                    </div>
+                </div>
+
+                <!-- Program Managers Message -->
+                <div class="hero-message" id="message-managers">
+                    <h1>Cut Labor Costs by <span>75%</span></h1>
+                    <p class="subheadline">Break the 10:1 scripting ratio. Deploy faster with smaller teams.</p>
+                    <div>
+                        <a class="cta-button" onclick="showSection('contact')">Schedule a Pilot</a>
+                        <a class="cta-button secondary" onclick="showSection('personas')">See ROI Breakdown</a>
+                    </div>
+                </div>
+
+                <!-- CISOs Message -->
+                <div class="hero-message" id="message-cisos">
+                    <h1>Zero Agent Maintenance. <span>Zero Range Pollution.</span></h1>
+                    <p class="subheadline">Network guest model. No host software. No technical debt.</p>
+                    <div>
+                        <a class="cta-button" onclick="showSection('contact')">Schedule a Pilot</a>
+                        <a class="cta-button secondary" onclick="showSection('how-it-works')">See Architecture</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section class="problem-section">
+            <div class="container">
+                <h2 class="section-title">The Infrastructure Tax</h2>
+                <p class="section-subtitle">In most cyber ranges, behavior is embedded in scripts and infrastructure. Every new scenario feels like a rebuild.</p>
+                
+                <div class="problem-grid">
+                    <div class="problem-content">
+                        <h3>The Challenge</h3>
+                        <ul class="problem-list">
+                            <li>
+                                <div>
+                                    <strong>Engineering Bottlenecks</strong>
+                                    <p>Behavior requires manual coding, not simple configuration.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <strong>Zero Reuse</strong>
+                                    <p>Activities are locked to specific hardware and cannot be shared.</p>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <strong>Broken Realism</strong>
+                                    <p>Static scripts create "tells" that fail under repeated observation.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="problem-content">
+                        <div class="stat-highlight">
+                            <div class="stat">10:1</div>
+                            <p><strong>The Scripting Ratio</strong></p>
+                            <p>10 hours of manual engineering for every 1 hour of exercise time. This is the industry standard you're competing against.</p>
+                        </div>
+                        <p style="margin-top: 2rem; font-size: 1.1rem;">Training directors spend excessive capital on billable engineering hours. Range operators are trapped managing "spaghetti logic." CISOs deal with agent-based maintenance drag.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Workflow Shift Section -->
+        <section class="workflow-shift-section">
+            <div class="container">
+                <h2 class="section-title">The Workflow Shift</h2>
+                <p class="section-subtitle">From engineering-heavy manual workflows to declarative configuration. Compare the two approaches.</p>
+
+                <div class="workflow-shift-tabs">
+                    <div class="workflow-shift-tab active" onclick="switchWorkflowTab('without')">Without Animate</div>
+                    <div class="workflow-shift-tab" onclick="switchWorkflowTab('with')">With Animate</div>
+                </div>
+
+                <!-- Without Animate Panel -->
+                <div class="workflow-shift-panel without active" id="panel-without">
+                    <div class="workflow-shift-phases">
+                        <div class="phase-card">
+                            <div class="phase-graphic">
+                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="26" cy="26" r="8"/><path d="M31 21l6 10M21 31l10 6"/>
+                                    <circle cx="54" cy="54" r="8"/><path d="M49 49l10 6M59 49l-6 10"/>
+                                    <path d="M32 32l12 12"/>
+                                    <path d="M12 18h20M12 26h16M12 34h24" stroke-width="1.5"/>
+                                </svg>
+                            </div>
+                            <h4>Phase 1: Manual Scenario Engineering</h4>
+                            <ul>
+                                <li><strong>Infrastructure Preparation</strong> — Build or verify OS, network topology, and technical layers for every scenario.</li>
+                                <li><strong>Embedded Logic Authoring</strong> — Write hundreds of lines of brittle, environment-specific scripts for every host or VM.</li>
+                                <li><strong>Contextual Binding</strong> — Behaviors locked to IPs, tools, and timing; nearly impossible to reuse elsewhere.</li>
+                            </ul>
+                        </div>
+                        <div class="phase-card">
+                            <div class="phase-graphic">
+                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="14" y="28" width="16" height="18" rx="2"/><rect x="32" y="28" width="16" height="18" rx="2"/><rect x="50" y="28" width="16" height="18" rx="2"/>
+                                    <path d="M40 14v14"/><circle cx="40" cy="10" r="3" fill="currentColor"/>
+                                    <path d="M22 37H10M58 37h12"/>
+                                </svg>
+                            </div>
+                            <h4>Phase 2: Intrusive Deployment</h4>
+                            <ul>
+                                <li><strong>Manual Injection</strong> — Log in to every machine to install and modify local scripts by hand.</li>
+                                <li><strong>Linear Labor Scaling</strong> — 1,000 users = 1,000 scripts; no central mechanism to propagate changes.</li>
+                                <li><strong>Lack of Abstraction</strong> — No separation between "what" and "where"; any change requires full rebuilds.</li>
+                            </ul>
+                        </div>
+                        <div class="phase-card">
+                            <div class="phase-graphic">
+                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M40 16L52 32H28L40 16z"/>
+                                    <path d="M20 44h6l4-8 4 12 4-8 4 8h6"/>
+                                    <path d="M16 56h48M24 56v8h-4M56 56v8h-4"/>
+                                    <path d="M28 36l-4 4 4 4M52 36l4 4-4 4"/>
+                                </svg>
+                            </div>
+                            <h4>Phase 3: Execution & Maintenance</h4>
+                            <ul>
+                                <li><strong>Static Execution</strong> — Scripts run as one-off automation with no governing coordination layer.</li>
+                                <li><strong>Environment Degradation</strong> — Orphaned files and one-off changes accumulate into "spaghetti logic."</li>
+                                <li><strong>The Rebuild Cycle</strong> — Re-image or manually clean after each exercise; behavior is baked into system images.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- With Animate Panel -->
+                <div class="workflow-shift-panel with" id="panel-with">
+                    <div class="workflow-shift-phases">
+                        <div class="phase-card">
+                            <div class="phase-graphic">
+                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="22" y="20" width="36" height="36" rx="4"/>
+                                    <path d="M40 32v16M32 40h16"/>
+                                    <circle cx="40" cy="40" r="4" fill="currentColor"/>
+                                    <path d="M40 20V14a4 4 0 014 4h-6M40 60v6a4 4 0 01-4-4h6"/>
+                                    <path d="M20 40H14a4 4 0 004-4v-6M60 40h6a4 4 0 00-4-4v6"/>
+                                </svg>
+                            </div>
+                            <h4>Phase 1: Deploy the "Muscle"</h4>
+                            <ul>
+                                <li><strong>Zero-Script Setup</strong> — Download the Animate Host ISO and boot as a VM at any point of presence.</li>
+                                <li><strong>Network Guest Architecture</strong> — Self-contained; no modifications to underlying OS or hardware.</li>
+                                <li><strong>Automatic Registration</strong> — Host checks in with the Coordinator via Cyber Mesh; verify instantly in the PDK.</li>
+                            </ul>
+                        </div>
+                        <div class="phase-card">
+                            <div class="phase-graphic">
+                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="16" y="14" width="22" height="18" rx="2"/>
+                                    <rect x="42" y="14" width="22" height="18" rx="2"/>
+                                    <rect x="29" y="48" width="22" height="18" rx="2"/>
+                                    <path d="M27 32v6M53 32v6M40 32v6"/>
+                                    <path d="M38 38l4 4 6-6" stroke-width="2"/>
+                                    <circle cx="40" cy="57" r="3"/>
+                                </svg>
+                            </div>
+                            <h4>Phase 2: Define Intent</h4>
+                            <ul>
+                                <li><strong>Declarative Selection</strong> — Select pre-built behaviors (SSH, HTTP, Malicious Exfiltration) from a library.</li>
+                                <li><strong>Hierarchical Scaling</strong> — Define Personalities and Actors once; global changes "blast" to every actor instantly.</li>
+                                <li><strong>Binding</strong> — Drag-and-drop Actors onto Hosts; the system handles technical mapping.</li>
+                            </ul>
+                        </div>
+                        <div class="phase-card">
+                            <div class="phase-graphic">
+                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="40" cy="40" r="22"/>
+                                    <path d="M40 22v18l10 6"/>
+                                    <circle cx="40" cy="40" r="5" fill="currentColor"/>
+                                    <path d="M40 18v-2M40 64v-2M18 40h-2M64 40h2"/>
+                                </svg>
+                            </div>
+                            <h4>Phase 3: Execution & Flywheel</h4>
+                            <ul>
+                                <li><strong>Load State</strong> — Right-click the Scenario Flywheel, transition to Load; Coordinator pushes bundles to Hosts.</li>
+                                <li><strong>Autonomous Play</strong> — Stochastic Scheduling creates non-deterministic, realistic Pattern of Life.</li>
+                                <li><strong>Pristine Teardown</strong> — Stop the Flywheel; behaviors unload, leaving infrastructure clean with no orphaned files.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="value-shift-table">
+                    <thead>
+                        <tr>
+                            <th>Dimension</th>
+                            <th>Traditional Manual Workflow</th>
+                            <th>The Animate Workflow</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Effort</td>
+                            <td class="traditional">10:1 Labor Ratio (Days/Weeks)</td>
+                            <td class="animate">75% Reduction (Hours/Minutes)</td>
+                        </tr>
+                        <tr>
+                            <td>Method</td>
+                            <td class="traditional">Brittle Manual Scripting</td>
+                            <td class="animate">Declarative Configuration</td>
+                        </tr>
+                        <tr>
+                            <td>Environment</td>
+                            <td class="traditional">"Graveyard" of Orphaned Files</td>
+                            <td class="animate">Pristine & Reusable Infrastructure</td>
+                        </tr>
+                        <tr>
+                            <td>Scaling</td>
+                            <td class="traditional">Linear (1 Script = 1 Host)</td>
+                            <td class="animate">Hierarchical (1 Change = 1,000 Actors)</td>
+                        </tr>
+                        <tr>
+                            <td>Realism</td>
+                            <td class="traditional">Static/Predictable Automation</td>
+                            <td class="animate">Stochastic/Realistic Pattern of Life</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="text-align: center; margin-top: 2rem;">
+                    <a class="cta-button" onclick="showSection('how-it-works')">See How It Works</a>
+                    <a class="cta-button" style="background: transparent; border: 2px solid var(--primary); color: var(--primary); margin-left: 1rem;" onclick="showSection('contact')">Schedule a Pilot</a>
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Personas Section -->
+    <div id="personas" class="content-section">
+        <section class="personas">
+            <div class="container">
+                <h2 class="section-title">Who We Serve</h2>
+                <p class="section-subtitle">Four personas. One solution: Network effects that are simple, scalable, and reusable.</p>
+
+                <!-- Primary Tier -->
+                <div class="personas-grid">
+                    <!-- Program Manager -->
+                    <div class="persona-card primary">
+                        <div class="role-badge">PRIMARY</div>
+                        <h3>Training Director / Program Manager</h3>
+                        <p class="persona-role">Budget & Cost Decision Maker</p>
+                        
+                        <div class="persona-section">
+                            <strong>Primary Focus:</strong>
+                            <p>Executive buy-in, billable hour efficiency, secure enclave compliance</p>
+                        </div>
+
+                        <div class="persona-section">
+                            <strong>The Toil:</strong>
+                            <p>Excessive capital on "billable engineering hours" for manual builds. High Side logistics nightmare where experts cannot troubleshoot off-site semicolon errors, leading to weeks of delay for a single scenario.</p>
+                        </div>
+
+                        <div class="persona-section highlight">
+                            <strong>The Animate Value:</strong>
+                            <ul>
+                                <li><strong>75% labor reduction</strong> – Scenarios ready in days, not weeks</li>
+                                <li><strong>Frictionless Low→High Side mobility</strong> – Build on Low Side, deploy via Blob methodology</li>
+                                <li><strong>"More with less"</strong> – Prove mission readiness to DOGE-era leadership</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Range Operator -->
+                    <div class="persona-card primary">
+                        <div class="role-badge">PRIMARY</div>
+                        <h3>Range Operator / Content Engineer</h3>
+                        <p class="persona-role">Day-to-Day User</p>
+                        
+                        <div class="persona-section">
+                            <strong>Primary Focus:</strong>
+                            <p>Scenario realism, speed of deployment, infrastructure repeatability</p>
+                        </div>
+
+                        <div class="persona-section">
+                            <strong>The Toil:</strong>
+                            <p>Trapped in the "10:1 Scripting Ratio" (10 hours of work for 1 hour of exercise). Managing "Spaghetti Logic" where scripts are hard-coded to specific VMs, causing "Range Pollution" and constant need to re-image assets.</p>
+                        </div>
+
+                        <div class="persona-section highlight">
+                            <strong>The Animate Value:</strong>
+                            <ul>
+                                <li><strong>BDK workflow</strong> – Reusable Python-based software assets</li>
+                                <li><strong>Hierarchical control</strong> – Update one global attribute to scale instantly</li>
+                                <li><strong>Pristine range</strong> – No more re-imaging after every run</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Tier -->
+                <div class="personas-grid secondary">
+                    <!-- CISO -->
+                    <div class="persona-card">
+                        <h3>Efficiency-Driven CISO / Architect</h3>
+                        <p class="persona-role">Long-Term Stability Owner</p>
+                        
+                        <div class="persona-section">
+                            <strong>Primary Focus:</strong>
+                            <p>Breaking the "Technical Debt Ceiling," system stability, reducing attack surface</p>
+                        </div>
+
+                        <div class="persona-section">
+                            <strong>The Toil:</strong>
+                            <p>Managing "operational drag" of host-based agents requiring constant re-engineering for OS kernel patches. Team burnout from spending 44% of time on repetitive manual tasks.</p>
+                        </div>
+
+                        <div class="persona-section highlight">
+                            <strong>The Animate Value:</strong>
+                            <ul>
+                                <li><strong>Agentless "Network Guest" architecture</strong></li>
+                                <li><strong>Protocol-native stability</strong></li>
+                                <li><strong>Zero software conflicts or blue screens</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Validation Lead -->
+                    <div class="persona-card">
+                        <h3>Enterprise Validation Lead</h3>
+                        <p class="persona-role">Defense Stack Tester</p>
+                        
+                        <div class="persona-section">
+                            <strong>Primary Focus:</strong>
+                            <p>Stochastic realism, anomaly detection accuracy, Pattern of Life at scale</p>
+                        </div>
+
+                        <div class="persona-section">
+                            <strong>The Toil:</strong>
+                            <p>Forced to use brittle PCAP replays or static scripts that trainees easily memorize. Manually simulating thousands of unique user sessions to create a "realistic haystack" is an insurmountable labor challenge.</p>
+                        </div>
+
+                        <div class="persona-section highlight">
+                            <strong>The Animate Value:</strong>
+                            <ul>
+                                <li><strong>Stochastic Execution Engine</strong></li>
+                                <li><strong>Authentic "Pattern of Life" generation</strong></li>
+                                <li><strong>High-fidelity "needle in haystack" validation</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Effects Clarification -->
+                <div style="max-width: 1000px; margin: 4rem auto 0; padding: 3rem; background: linear-gradient(135deg, var(--dark) 0%, var(--dark-blue) 100%); border-radius: 12px; color: white; text-align: center;">
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem;">Our Focus: Network Effects</h3>
+                    <p style="font-size: 1.2rem; opacity: 0.95; line-height: 1.8;">If you need <strong>network effects</strong>—traffic generation, pattern of life simulation, realistic telemetry—regardless of what else your training requires, we can cover that piece of your puzzle so it's simple, scalable, and one less thing to worry about.<br><br>
+                    <em style="font-size: 0.95rem; opacity: 0.8;">Note: Host/desktop effects are available through bespoke third-party services, environment-dependent.</em></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- How It Works Section -->
+    <div id="how-it-works" class="content-section">
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">The Behavioral Orchestration Layer: Transform behavior from manual coding into modular, configurable scenarios</p>
+
+                <div class="workflow-container">
+                    <h3 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary-dark);">The Workflow</h3>
+                    
+                    <div class="workflow-steps">
+                        <div class="workflow-step">
+                            <div class="step-number">1</div>
+                            <img src="assets/configure.png" alt="Configure" class="step-image">
+                            <h4>Configure</h4>
+                            <p>Define desired outcomes and roles without scripting. Select behaviors from library, map to environment.</p>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-number">2</div>
+                            <img src="assets/deploy.png" alt="Deploy" class="step-image">
+                            <h4>Deploy</h4>
+                            <p>Bind reusable behaviors to existing topologies and tools via network trunking. Zero host software.</p>
+                        </div>
+                        <div class="workflow-step">
+                            <div class="step-number">3</div>
+                            <img src="assets/execute.png" alt="Execute" class="step-image">
+                            <h4>Execute</h4>
+                            <p>Behavior executes with defined placement, timing, and constraints. Each run produces unique patterns.</p>
+                        </div>
+                    </div>
+
+                    <!-- Screenshots Placeholders -->
+                    <div class="screenshot-placeholder">
+                        <h4>📊 Scenario Studio Interface</h4>
+                        <p>Visual configuration interface for building scenarios without code</p>
+                    </div>
+
+                    <div class="screenshot-placeholder">
+                        <h4>⚙️ BDK Workflow</h4>
+                        <p>Python-based Behavior Development Kit for creating reusable assets</p>
+                    </div>
+
+                    <!-- Comparison -->
+                    <div style="background: var(--bg-light); padding: 3rem; border-radius: 12px; margin: 3rem 0;">
+                        <h3 style="font-size: 2rem; margin-bottom: 2rem; text-align: center; color: var(--primary-dark);">Traditional vs. Animate</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div style="padding: 2rem; background: white; border-radius: 12px; border-left: 4px solid #E8945F;">
+                                <h4 style="color: #E8945F; margin-bottom: 1rem;">❌ Traditional Scripting</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="padding: 0.5rem 0;">⏰ <strong>Weeks</strong> to build one scenario</li>
+                                    <li style="padding: 0.5rem 0;">🔧 Manual coding for every change</li>
+                                    <li style="padding: 0.5rem 0;">🔄 Constant re-imaging after exercises</li>
+                                    <li style="padding: 0.5rem 0;">📉 Zero reusability across environments</li>
+                                    <li style="padding: 0.5rem 0;">🎯 Static, predictable patterns</li>
+                                </ul>
+                            </div>
+                            <div style="padding: 2rem; background: white; border-radius: 12px; border-left: 4px solid var(--primary);">
+                                <h4 style="color: var(--primary); margin-bottom: 1rem;">✅ Animate Configuration</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="padding: 0.5rem 0;">⚡ <strong>Hours</strong> to build and deploy</li>
+                                    <li style="padding: 0.5rem 0;">🎨 GUI-based configuration</li>
+                                    <li style="padding: 0.5rem 0;">✨ Pristine infrastructure, no cleanup</li>
+                                    <li style="padding: 0.5rem 0;">♻️ Fully reusable across topologies</li>
+                                    <li style="padding: 0.5rem 0;">🎲 Stochastic, realistic patterns</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Capabilities -->
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-top: 3rem;">
+                        <div style="padding: 2rem; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-radius: 12px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.3rem;">🎯 Centralized Project Operations</h4>
+                            <p>Define, place, and evolve behavior without rebuilding the environment. Modify through configuration, not environment rebuilds.</p>
+                        </div>
+                        <div style="padding: 2rem; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-radius: 12px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.3rem;">⚡ Intent-Driven Execution</h4>
+                            <p>Behavior originates from the correct level of effect (network, host, or device). Execution follows defined placement, timing, and constraints.</p>
+                        </div>
+                        <div style="padding: 2rem; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-radius: 12px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.3rem;">🔄 Reusable Scenarios</h4>
+                            <p>Reuse scenarios without destabilizing the environment. Behaviors are decoupled from infrastructure.</p>
+                        </div>
+                        <div style="padding: 2rem; background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-radius: 12px;">
+                            <h4 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.3rem;">📊 Unique Patterns</h4>
+                            <p>Each run produces unique patterns of life signals within defined bounds. Artifacts emerge naturally from execution.</p>
+                        </div>
+                    </div>
+
+                    <!-- Scale Note -->
+                    <div style="margin-top: 3rem; padding: 2rem; background: var(--bg-light); border-radius: 12px; border-left: 4px solid var(--primary);">
+                        <p style="font-size: 1.1rem;"><strong>Proven Scale:</strong> Successfully orchestrated 50-100 users. Theoretically unlimited scalability through hierarchical attribution—update one global attribute to cascade changes instantly across all actors.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Success Stories Section -->
+    <div id="success" class="content-section">
+        <section class="success-stories">
+            <div class="container">
+                <h2 class="section-title" style="color: white;">Proven Impact</h2>
+                <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">Organizations transforming their cybersecurity training operations with Animate Cyber</p>
+
+                <div class="stories-grid">
+                    <!-- U.S. Navy / ManTech -->
+                    <div class="story-card">
+                        <div class="story-logo">
+                            <img src="assets/NAVY Logo.png" alt="U.S. Navy / ManTech">
+                        </div>
+                        <h4>U.S. Navy / ManTech ST3P</h4>
+                        <p class="story-quote">"Simulated realistic human-like network activity"</p>
+                        <div class="story-highlight">
+                            <p><strong>Ranked Top 10 Technology</strong> for innovation and relevance</p>
+                        </div>
+                    </div>
+
+                    <!-- PI Achievers -->
+                    <div class="story-card">
+                        <div class="story-logo">
+                            <img src="assets/PI Acheivers Logo.png" alt="PI Achievers">
+                        </div>
+                        <h4>PI Achievers</h4>
+                        <p class="story-quote">"Cracked the code for network behavior"</p>
+                        <div class="story-highlight">
+                            <p><strong>"New scenarios are spun up in hours instead of weeks"</strong></p>
+                        </div>
+                    </div>
+
+                    <!-- FS-ISAC -->
+                    <div class="story-card">
+                        <div class="story-logo">
+                            <img src="assets/FS-ISAC Logo.png" alt="FS-ISAC">
+                        </div>
+                        <h4>FS-ISAC</h4>
+                        <p class="story-quote">"Never seen anything like this."</p>
+                        <div class="story-highlight">
+                            <p>Deployed large-scale ransomware simulations for <strong>200+ financial institutions</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Contact Section -->
+    <div id="contact" class="content-section">
+        <section class="cta-section">
+            <div class="container">
+                <h2>Contact us to schedule your demo today!</h2>
+                <p style="margin-bottom: 0;">Schedule a pilot or reach out to sales. We'll get back to you shortly.</p>
+                <form class="contact-form" action="https://formsubmit.co/info@animatecyber.com" method="POST">
+                    <input type="hidden" name="_subject" value="Animate Cyber - Contact Form">
+                    <input type="hidden" name="_template" value="table">
+                    <div class="form-row">
+                        <div>
+                            <label for="firstname">First name <span class="required">*</span></label>
+                            <input type="text" id="firstname" name="First name" placeholder="Enter your first name" required>
+                        </div>
+                        <div>
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="Email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label for="position">Position</label>
+                            <input type="text" id="position" name="Position" placeholder="Enter a position or job title">
+                        </div>
+                        <div>
+                            <label for="company">Company name</label>
+                            <input type="text" id="company" name="Company name" placeholder="Enter a company name">
+                        </div>
+                    </div>
+                    <div class="form-row single">
+                        <div>
+                            <label for="subject">Subject <span class="required">*</span></label>
+                            <input type="text" id="subject" name="Subject" placeholder="Schedule Demo, Request Info, etc." required>
+                        </div>
+                    </div>
+                    <div class="form-row single">
+                        <div>
+                            <label for="message">Write a message</label>
+                            <textarea id="message" name="Message" placeholder="Enter text here"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-submit">
+                        <button type="submit">Send</button>
+                    </div>
+                </form>
+                <div style="margin-top: 2.5rem; font-size: 1rem; opacity: 0.9;">
+                    <p>📧 <a href="mailto:info@animatecyber.com" style="color: white; text-decoration: underline;">info@animatecyber.com</a></p>
+                    <p style="margin-top: 0.5rem;">🌐 WWW.ANIMATECYBER.COM</p>
+                    <p style="margin-top: 1rem;">Serving federal agencies, defense contractors, and enterprise security teams</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Animate Cyber. All rights reserved.</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">Operationalizing Digital Behavior through the Behavioral Operating System</p>
+        </div>
+    </footer>
+
+    <script>
+        // Section navigation
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Workflow Shift tab switching
+        function switchWorkflowTab(tab) {
+            const tabs = document.querySelectorAll('.workflow-shift-tab');
+            const panels = document.querySelectorAll('.workflow-shift-panel');
+            
+            tabs.forEach((t, i) => {
+                t.classList.toggle('active', (tab === 'without' && i === 0) || (tab === 'with' && i === 1));
+            });
+            
+            panels.forEach((p, i) => {
+                p.classList.toggle('active', (tab === 'without' && p.classList.contains('without')) || (tab === 'with' && p.classList.contains('with')));
+            });
+        }
+
+        // Audience switching
+        function switchAudience(audience) {
+            // Update tabs
+            const tabs = document.querySelectorAll('.audience-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-audience="${audience}"]`).classList.add('active');
+
+            // Update messages
+            const messages = document.querySelectorAll('.hero-message');
+            messages.forEach(message => {
+                message.classList.remove('active');
+            });
+            document.getElementById(`message-${audience}`).classList.add('active');
+        }
+
+        // Auto-rotate audiences every 8 seconds
+        let currentAudienceIndex = 0;
+        const audiences = ['operators', 'managers', 'cisos'];
+        
+        function autoRotate() {
+            currentAudienceIndex = (currentAudienceIndex + 1) % audiences.length;
+            switchAudience(audiences[currentAudienceIndex]);
+        }
+        
+        setInterval(autoRotate, 8000);
+    </script>
+</body>
+</html>
