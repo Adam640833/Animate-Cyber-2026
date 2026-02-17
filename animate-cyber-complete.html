@@ -317,9 +317,49 @@
         }
 
         .problem-list li::before {
-            content: 'âš ï¸';
-            font-size: 1.5rem;
+            content: none;
+        }
+
+        .challenge-icon {
             flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .challenge-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .challenge-icon--terminal {
+            color: #ff4444;
+            filter: drop-shadow(0 0 6px #ff4444) drop-shadow(0 0 12px rgba(255, 68, 68, 0.6));
+            animation: none;
+        }
+
+        .challenge-icon--lock {
+            color: var(--primary-dark);
+            animation: challenge-pulse 2s ease-in-out infinite;
+        }
+
+        .challenge-icon--eye-off {
+            color: #c53030;
+            animation: challenge-flicker 2.5s ease-in-out infinite;
+        }
+
+        @keyframes challenge-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.05); }
+        }
+
+        @keyframes challenge-flicker {
+            0%, 100% { opacity: 1; }
+            25% { opacity: 0.4; }
+            50% { opacity: 1; }
+            75% { opacity: 0.7; }
         }
 
         .stat-highlight {
@@ -430,7 +470,7 @@
         }
 
         .persona-section ul li::before {
-            content: 'â†’';
+            content: '\2192';
             position: absolute;
             left: 0;
             color: var(--primary);
@@ -470,7 +510,7 @@
         }
 
         .workflow-step::after {
-            content: 'â†’';
+            content: '\2192';
             position: absolute;
             right: -2.5rem;
             top: 50%;
@@ -869,7 +909,7 @@
         }
 
         .phase-card li::before {
-            content: 'â€¢';
+            content: '\2022';
             position: absolute;
             left: 0;
             font-weight: bold;
@@ -1105,18 +1145,27 @@
                         <h3>The Challenge</h3>
                         <ul class="problem-list">
                             <li>
+                                <span class="challenge-icon challenge-icon--terminal" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                                </span>
                                 <div>
                                     <strong>Engineering Bottlenecks</strong>
                                     <p>Behavior requires manual coding, not simple configuration.</p>
                                 </div>
                             </li>
                             <li>
+                                <span class="challenge-icon challenge-icon--lock" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                                </span>
                                 <div>
                                     <strong>Zero Reuse</strong>
                                     <p>Activities are locked to specific hardware and cannot be shared.</p>
                                 </div>
                             </li>
                             <li>
+                                <span class="challenge-icon challenge-icon--eye-off" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </span>
                                 <div>
                                     <strong>Broken Realism</strong>
                                     <p>Static scripts create "tells" that fail under repeated observation.</p>
