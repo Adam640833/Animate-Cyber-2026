@@ -880,6 +880,38 @@
 
         .workflow-shift-panel.without .phase-graphic {
             color: var(--accent-warm);
+            filter: drop-shadow(0 0 8px rgba(232, 148, 95, 0.7)) drop-shadow(0 0 16px rgba(232, 148, 95, 0.4));
+        }
+
+        .phase-card li:has(.phase-li-icon) {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding-left: 0;
+        }
+
+        .phase-card li:has(.phase-li-icon)::before {
+            content: none;
+        }
+
+        .phase-li-icon {
+            flex-shrink: 0;
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-top: 0.15rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phase-li-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .workflow-shift-panel.without .phase-li-icon {
+            color: var(--accent-warm);
+            filter: drop-shadow(0 0 4px rgba(232, 148, 95, 0.8));
         }
 
         .workflow-shift-panel.with .phase-graphic {
@@ -909,7 +941,7 @@
         }
 
         .phase-card li::before {
-            content: 'â€¢';
+            content: '\2022';
             position: absolute;
             left: 0;
             font-weight: bold;
@@ -1202,49 +1234,62 @@
                     <div class="workflow-shift-phases">
                         <div class="phase-card">
                             <div class="phase-graphic">
-                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="26" cy="26" r="8"/><path d="M31 21l6 10M21 31l10 6"/>
-                                    <circle cx="54" cy="54" r="8"/><path d="M49 49l10 6M59 49l-6 10"/>
-                                    <path d="M32 32l12 12"/>
-                                    <path d="M12 18h20M12 26h16M12 34h24" stroke-width="1.5"/>
-                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5a2.12 2.12 0 0 1-3-3L12 9"/><path d="M18 13l-1.5-1.5"/><path d="M15 6 9 12"/><path d="m15 6 3-3 4 4-6 6-3-3"/></svg>
                             </div>
                             <h4>Phase 1: Manual Scenario Engineering</h4>
                             <ul>
-                                <li><strong>Infrastructure Preparation</strong> â€” Build or verify OS, network topology, and technical layers for every scenario.</li>
-                                <li><strong>Embedded Logic Authoring</strong> â€” Write hundreds of lines of brittle, environment-specific scripts for every host or VM.</li>
-                                <li><strong>Contextual Binding</strong> â€” Behaviors locked to IPs, tools, and timing; nearly impossible to reuse elsewhere.</li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M12 8v4"/><path d="M9 18h6"/><path d="M16 14h4"/><path d="M4 14h4"/></svg></span>
+                                    <span><strong>Infrastructure Preparation</strong> — Build or verify OS, network topology, and technical layers for every scenario.</span>
+                                </li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg></span>
+                                    <span><strong>Embedded Logic Authoring</strong> — Write hundreds of lines of brittle, environment-specific scripts for every host or VM.</span>
+                                </li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 0 1 0 10h-2"/><line x1="8" y1="12" x2="16" y2="12"/><path d="m2 2 20 20"/></svg></span>
+                                    <span><strong>Contextual Binding</strong> — Behaviors locked to IPs, tools, and timing; nearly impossible to reuse elsewhere.</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="phase-card">
                             <div class="phase-graphic">
-                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="14" y="28" width="16" height="18" rx="2"/><rect x="32" y="28" width="16" height="18" rx="2"/><rect x="50" y="28" width="16" height="18" rx="2"/>
-                                    <path d="M40 14v14"/><circle cx="40" cy="10" r="3" fill="currentColor"/>
-                                    <path d="M22 37H10M58 37h12"/>
-                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 21c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1 .6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M19.38 20A11.6 11.6 0 0 0 21 14l-9-9-4 4v6"/><path d="M19 5a2.8 2.8 0 0 1-1 2 2.8 2.8 0 0 1-2-1"/><path d="M14 8L9 3"/></svg>
                             </div>
                             <h4>Phase 2: Intrusive Deployment</h4>
                             <ul>
-                                <li><strong>Manual Injection</strong> â€” Log in to every machine to install and modify local scripts by hand.</li>
-                                <li><strong>Linear Labor Scaling</strong> â€” 1,000 users = 1,000 scripts; no central mechanism to propagate changes.</li>
-                                <li><strong>Lack of Abstraction</strong> â€” No separation between "what" and "where"; any change requires full rebuilds.</li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4"/><path d="M17 7l3-3"/><path d="M19 9 8 20l-5-5 11-12"/><path d="M5 5 4 4"/><path d="m15 5 4 4"/></svg></span>
+                                    <span><strong>Manual Injection</strong> — Log in to every machine to install and modify local scripts by hand.</span>
+                                </li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                                    <span><strong>Linear Labor Scaling</strong> — 1,000 users = 1,000 scripts; no central mechanism to propagate changes.</span>
+                                </li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg></span>
+                                    <span><strong>Lack of Abstraction</strong> — No separation between "what" and "where"; any change requires full rebuilds.</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="phase-card">
                             <div class="phase-graphic">
-                                <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M40 16L52 32H28L40 16z"/>
-                                    <path d="M20 44h6l4-8 4 12 4-8 4 8h6"/>
-                                    <path d="M16 56h48M24 56v8h-4M56 56v8h-4"/>
-                                    <path d="M28 36l-4 4 4 4M52 36l4 4-4 4"/>
-                                </svg>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                             </div>
                             <h4>Phase 3: Execution & Maintenance</h4>
                             <ul>
-                                <li><strong>Static Execution</strong> â€” Scripts run as one-off automation with no governing coordination layer.</li>
-                                <li><strong>Environment Degradation</strong> â€” Orphaned files and one-off changes accumulate into "spaghetti logic."</li>
-                                <li><strong>The Rebuild Cycle</strong> â€” Re-image or manually clean after each exercise; behavior is baked into system images.</li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg></span>
+                                    <span><strong>Static Execution</strong> — Scripts run as one-off automation with no governing coordination layer.</span>
+                                </li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg></span>
+                                    <span><strong>Environment Degradation</strong> — Orphaned files and one-off changes accumulate into "spaghetti logic."</span>
+                                </li>
+                                <li>
+                                    <span class="phase-li-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></span>
+                                    <span><strong>The Rebuild Cycle</strong> — Re-image or manually clean after each exercise; behavior is baked into system images.</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -1265,9 +1310,9 @@
                             </div>
                             <h4>Phase 1: Deploy the "Muscle"</h4>
                             <ul>
-                                <li><strong>Zero-Script Setup</strong> â€” Download the Animate Host ISO and boot as a VM at any point of presence.</li>
-                                <li><strong>Network Guest Architecture</strong> â€” Self-contained; no modifications to underlying OS or hardware.</li>
-                                <li><strong>Automatic Registration</strong> â€” Host checks in with the Coordinator via Cyber Mesh; verify instantly in the PDK.</li>
+                                <li><strong>Zero-Script Setup</strong> — Download the Animate Host ISO and boot as a VM at any point of presence.</li>
+                                <li><strong>Network Guest Architecture</strong> — Self-contained; no modifications to underlying OS or hardware.</li>
+                                <li><strong>Automatic Registration</strong> — Host checks in with the Coordinator via Cyber Mesh; verify instantly in the PDK.</li>
                             </ul>
                         </div>
                         <div class="phase-card">
@@ -1283,9 +1328,9 @@
                             </div>
                             <h4>Phase 2: Define Intent</h4>
                             <ul>
-                                <li><strong>Declarative Selection</strong> â€” Select pre-built behaviors (SSH, HTTP, Malicious Exfiltration) from a library.</li>
-                                <li><strong>Hierarchical Scaling</strong> â€” Define Personalities and Actors once; global changes "blast" to every actor instantly.</li>
-                                <li><strong>Binding</strong> â€” Drag-and-drop Actors onto Hosts; the system handles technical mapping.</li>
+                                <li><strong>Declarative Selection</strong> — Select pre-built behaviors (SSH, HTTP, Malicious Exfiltration) from a library.</li>
+                                <li><strong>Hierarchical Scaling</strong> — Define Personalities and Actors once; global changes "blast" to every actor instantly.</li>
+                                <li><strong>Binding</strong> — Drag-and-drop Actors onto Hosts; the system handles technical mapping.</li>
                             </ul>
                         </div>
                         <div class="phase-card">
@@ -1299,9 +1344,9 @@
                             </div>
                             <h4>Phase 3: Execution & Flywheel</h4>
                             <ul>
-                                <li><strong>Load State</strong> â€” Right-click the Scenario Flywheel, transition to Load; Coordinator pushes bundles to Hosts.</li>
-                                <li><strong>Autonomous Play</strong> â€” Stochastic Scheduling creates non-deterministic, realistic Pattern of Life.</li>
-                                <li><strong>Pristine Teardown</strong> â€” Stop the Flywheel; behaviors unload, leaving infrastructure clean with no orphaned files.</li>
+                                <li><strong>Load State</strong> — Right-click the Scenario Flywheel, transition to Load; Coordinator pushes bundles to Hosts.</li>
+                                <li><strong>Autonomous Play</strong> — Stochastic Scheduling creates non-deterministic, realistic Pattern of Life.</li>
+                                <li><strong>Pristine Teardown</strong> — Stop the Flywheel; behaviors unload, leaving infrastructure clean with no orphaned files.</li>
                             </ul>
                         </div>
                     </div>
@@ -1381,9 +1426,9 @@
                         <div class="persona-section highlight">
                             <strong>The Animate Value:</strong>
                             <ul>
-                                <li><strong>75% labor reduction</strong> â€“ Scenarios ready in days, not weeks</li>
-                                <li><strong>Frictionless Lowâ†’High Side mobility</strong> â€“ Build on Low Side, deploy via Blob methodology</li>
-                                <li><strong>"More with less"</strong> â€“ Prove mission readiness to DOGE-era leadership</li>
+                                <li><strong>75% labor reduction</strong> — Scenarios ready in days, not weeks</li>
+                                <li><strong>Frictionless Low→High Side mobility</strong> — Build on Low Side, deploy via Blob methodology</li>
+                                <li><strong>"More with less"</strong> — Prove mission readiness to DOGE-era leadership</li>
                             </ul>
                         </div>
                     </div>
@@ -1407,9 +1452,9 @@
                         <div class="persona-section highlight">
                             <strong>The Animate Value:</strong>
                             <ul>
-                                <li><strong>BDK workflow</strong> â€“ Reusable Python-based software assets</li>
-                                <li><strong>Hierarchical control</strong> â€“ Update one global attribute to scale instantly</li>
-                                <li><strong>Pristine range</strong> â€“ No more re-imaging after every run</li>
+                                <li><strong>BDK workflow</strong> — Reusable Python-based software assets</li>
+                                <li><strong>Hierarchical control</strong> — Update one global attribute to scale instantly</li>
+                                <li><strong>Pristine range</strong> — No more re-imaging after every run</li>
                             </ul>
                         </div>
                     </div>
@@ -1471,7 +1516,7 @@
                 <!-- Network Effects Clarification -->
                 <div style="max-width: 1000px; margin: 4rem auto 0; padding: 3rem; background: linear-gradient(135deg, var(--dark) 0%, var(--dark-blue) 100%); border-radius: 12px; color: white; text-align: center;">
                     <h3 style="font-size: 2rem; margin-bottom: 1rem;">Our Focus: Network Effects</h3>
-                    <p style="font-size: 1.2rem; opacity: 0.95; line-height: 1.8;">If you need <strong>network effects</strong>â€”traffic generation, pattern of life simulation, realistic telemetryâ€”regardless of what else your training requires, we can cover that piece of your puzzle so it's simple, scalable, and one less thing to worry about.<br><br>
+                    <p style="font-size: 1.2rem; opacity: 0.95; line-height: 1.8;">If you need <strong>network effects</strong>—traffic generation, pattern of life simulation, realistic telemetry—regardless of what else your training requires, we can cover that piece of your puzzle so it's simple, scalable, and one less thing to worry about.<br><br>
                     <em style="font-size: 0.95rem; opacity: 0.8;">Note: Host/desktop effects are available through bespoke third-party services, environment-dependent.</em></p>
                 </div>
             </div>
@@ -1569,7 +1614,7 @@
 
                     <!-- Scale Note -->
                     <div style="margin-top: 3rem; padding: 2rem; background: var(--bg-light); border-radius: 12px; border-left: 4px solid var(--primary);">
-                        <p style="font-size: 1.1rem;"><strong>Proven Scale:</strong> Successfully orchestrated 50-100 users. Theoretically unlimited scalability through hierarchical attributionâ€”update one global attribute to cascade changes instantly across all actors.</p>
+                        <p style="font-size: 1.1rem;"><strong>Proven Scale:</strong> Successfully orchestrated 50-100 users. Theoretically unlimited scalability through hierarchical attribution—update one global attribute to cascade changes instantly across all actors.</p>
                     </div>
                 </div>
             </div>
