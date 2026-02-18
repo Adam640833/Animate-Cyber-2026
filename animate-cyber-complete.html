@@ -141,6 +141,34 @@
             z-index: 1;
         }
 
+        .hero-stage {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .hero-stage .hero-stage-headline {
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .hero-stage .hero-stage-headline span {
+            color: var(--accent);
+        }
+
+        .hero-stage .hero-stage-sub {
+            font-size: 1.25rem;
+            font-weight: 300;
+            max-width: 720px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
         .audience-tabs {
             display: flex;
             gap: 1rem;
@@ -1062,6 +1090,14 @@
                 display: none;
             }
 
+            .hero-stage .hero-stage-headline {
+                font-size: 2rem;
+            }
+
+            .hero-stage .hero-stage-sub {
+                font-size: 1.1rem;
+            }
+
             .hero h1 {
                 font-size: 2.5rem;
             }
@@ -1121,6 +1157,11 @@
     <div id="home" class="content-section active">
         <section class="hero">
             <div class="hero-content">
+                <!-- Stage-setting headline -->
+                <div class="hero-stage">
+                    <h2 class="hero-stage-headline">Stop Scripting. <span>Start Training.</span></h2>
+                    <p class="hero-stage-sub">Automate the network pulse of your cyber range. From manual setups to high-fidelity environments in minutes, not weeks.</p>
+                </div>
                 <!-- Audience Selection Tabs -->
                 <div class="audience-tabs">
                     <div class="audience-tab active" data-audience="operators" onclick="switchAudience('operators')">
