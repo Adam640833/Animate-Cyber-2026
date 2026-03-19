@@ -7,107 +7,122 @@
 <title>Animate Cyber — The Easy Button for Network Traffic in Cyber Environments</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
    RESET & ROOT
-═══════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior:smooth; }
+html { scroll-behavior:smooth; font-size:16px; }
 
 :root {
-–bg:         #060A10;
-–bg2:        #080D15;
-–bg3:        #0A1020;
-–surface:    #0D1526;
-–surface2:   #111D30;
-–border:     rgba(14,165,233,0.12);
-–border2:    rgba(14,165,233,0.22);
-–border3:    rgba(255,255,255,0.08);
-–blue:       #0EA5E9;
-–blue-dim:   rgba(14,165,233,0.12);
-–blue-glow:  rgba(14,165,233,0.3);
-–amber:      #F59E0B;
-–amber-dim:  rgba(245,158,11,0.1);
-–red:        #EF4444;
-–green:      #10B981;
-–text:       #F0F4F8;
-–text2:      rgba(240,244,248,0.7);   /* FIX #3,4,5: was 0.6, bumped up */
-–text3:      rgba(240,244,248,0.5);   /* FIX #3,4,5: was 0.25, now 0.5 */
-–font-d:     ‘Barlow Condensed’, sans-serif;
-–font-b:     ‘IBM Plex Sans’, sans-serif;
-–font-m:     ‘IBM Plex Mono’, monospace;
+--bg:         #060A10;
+--bg2:        #080D15;
+--bg3:        #0A1020;
+--surface:    #0D1526;
+--surface2:   #111D30;
+--border:     rgba(14,165,233,0.12);
+--border2:    rgba(14,165,233,0.22);
+--border3:    rgba(255,255,255,0.08);
+--blue:       #0EA5E9;
+--blue-dim:   rgba(14,165,233,0.12);
+--blue-glow:  rgba(14,165,233,0.3);
+--blue-bright:#38BDF8;
+--amber:      #F59E0B;
+--amber-dim:  rgba(245,158,11,0.1);
+--red:        #EF4444;
+--green:      #10B981;
+--text:       #F0F4F8;
+--text2:      rgba(240,244,248,0.82);
+--text3:      rgba(240,244,248,0.64);
+--font-display:'Barlow Condensed', sans-serif;
+--font-body:  'IBM Plex Sans', sans-serif;
+--font-mono:  'IBM Plex Mono', monospace;
 }
 
-html, body { font-family:var(–font-b); background:var(–bg); color:var(–text); overflow-x:hidden; line-height:1.6; }
+body {
+font-family: var(--font-body);
+background: var(--bg);
+color: var(--text);
+overflow-x: hidden;
+line-height: 1.6;
+}
 
+/* Noise texture overlay */
 body::after {
-content:’’; position:fixed; inset:0;
-background-image:url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘n’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23n)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events:none; z-index:9999; opacity:0.3;
+content:'';
+position:fixed; inset:0;
+background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+pointer-events:none; z-index:9999; opacity:0.22;
 }
 
 ::-webkit-scrollbar { width:3px; }
-::-webkit-scrollbar-track { background:var(–bg); }
-::-webkit-scrollbar-thumb { background:var(–blue); }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius:2px; }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
 NAV
-═══════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 nav {
 position:fixed; top:0; left:0; right:0; z-index:1000;
-background:rgba(6,10,16,0.92); backdrop-filter:blur(20px);
-border-bottom:1px solid var(–border);
+background:rgba(6,10,16,0.92);
+backdrop-filter:blur(20px);
+border-bottom:1px solid var(--border);
 }
 .nav-wrap {
-max-width:1400px; margin:0 auto; padding:0 1.5rem; height:64px;
+max-width:1400px; margin:0 auto;
+padding:0 1.5rem; height:64px;
 display:flex; align-items:center; justify-content:space-between;
 }
 .nav-logo { display:flex; align-items:center; gap:0.75rem; cursor:pointer; text-decoration:none; }
 .nav-logo img { height:34px; filter:drop-shadow(0 0 10px rgba(14,165,233,0.4)); }
-.nav-logo-text { font-family:var(–font-d); font-weight:700; font-size:1.2rem; color:var(–text); letter-spacing:1px; text-transform:uppercase; }
-.nav-logo-text span { color:var(–blue); }
-
-/* Desktop links */
-.nav-links { display:flex; list-style:none; align-items:center; gap:0.2rem; }
-.nav-links li span {
-font-family:var(–font-m); font-size:0.72rem; color:var(–text2);
-padding:0.4rem 0.85rem; border-radius:3px; border:1px solid transparent;
-cursor:pointer; transition:all 0.2s; letter-spacing:0.3px; display:block;
+.nav-logo-text {
+font-family:var(--font-display); font-weight:700; font-size:1.25rem;
+color:var(--text); letter-spacing:1px; text-transform:uppercase;
 }
-.nav-links li span:hover { color:var(–text); background:var(–blue-dim); border-color:var(–border); }
+.nav-logo-text span { color:var(--blue); }
+.nav-links { display:flex; list-style:none; align-items:center; gap:0.25rem; }
+.nav-links li a, .nav-links li span {
+font-family:var(--font-mono); font-size:0.72rem; font-weight:400;
+color:var(--text2); padding:0.4rem 0.9rem; border-radius:3px;
+cursor:pointer; transition:all 0.2s; text-decoration:none;
+border:1px solid transparent; letter-spacing:0.5px;
+}
+.nav-links li a:hover, .nav-links li span:hover { color:var(--text); background: var(--blue-dim); border-color:var(--border); }
 .nav-cta {
-background:var(–blue) !important; color:var(–bg) !important;
-border:1px solid var(–blue) !important; font-weight:600 !important;
+font-family:var(--font-mono)!important; font-size:0.72rem!important; font-weight:600!important;
+letter-spacing:0.5px; padding:0.45rem 1.25rem!important;
+background: var(--blue)!important; color:var(--bg)!important;
+border:1px solid var(--blue)!important; border-radius:3px!important;
+cursor:pointer; transition:all 0.2s;
 }
-.nav-cta:hover { background:transparent !important; color:var(–blue) !important; box-shadow:0 0 20px var(–blue-glow) !important; }
+.nav-cta:hover { background:transparent!important; color:var(--blue)!important; box-shadow:0 0 20px var(--blue-glow)!important; }
 
-/* FIX #1: Hamburger button */
+/* FIX #1: Hamburger + mobile menu */
 .hamburger {
 display:none; flex-direction:column; gap:5px; cursor:pointer;
-padding:8px; border:1px solid var(–border2); border-radius:4px;
+padding:8px; border:1px solid var(--border2); border-radius:4px;
 background:transparent;
 }
-.hamburger span { display:block; width:22px; height:2px; background:var(–blue); border-radius:1px; transition:all 0.3s; }
+.hamburger span { display:block; width:22px; height:2px; background:var(--blue); border-radius:1px; transition:all 0.3s; }
 .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity:0; }
 .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 
-/* Mobile menu drawer */
 .mobile-menu {
 display:none; position:fixed; top:64px; left:0; right:0; z-index:999;
 background:rgba(6,10,16,0.98); backdrop-filter:blur(20px);
-border-bottom:1px solid var(–border2);
+border-bottom:1px solid var(--border2);
 flex-direction:column; padding:1rem 1.5rem 1.5rem;
 }
 .mobile-menu.open { display:flex; }
 .mobile-menu span {
-font-family:var(–font-m); font-size:0.85rem; color:var(–text2);
-padding:1rem 0; border-bottom:1px solid var(–border3);
+font-family:var(--font-mono); font-size:0.85rem; color:var(--text2);
+padding:1rem 0; border-bottom:1px solid var(--border3);
 cursor:pointer; letter-spacing:0.5px; transition:color 0.2s;
 }
-.mobile-menu span:hover { color:var(–blue); }
+.mobile-menu span:hover { color:var(--blue); }
 .mobile-menu span:last-child { border-bottom:none; }
 .mobile-menu .m-cta {
-margin-top:1rem; background:var(–blue); color:var(–bg);
+margin-top:1rem; background:var(--blue); color:var(--bg);
 text-align:center; padding:1rem; border-radius:3px;
 font-weight:700; letter-spacing:1px; border-bottom:none !important;
 }
@@ -116,367 +131,492 @@ font-weight:700; letter-spacing:1px; border-bottom:none !important;
 .page { display:none; }
 .page.active { display:block; }
 
-/* ═══════════════════════════════════════
-SHARED LAYOUT
-═══════════════════════════════════════ */
-.wrap { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
-.section { padding:7rem 1.5rem; position:relative; z-index:1; }
-.section.alt { background:var(–bg2); }
+/* ═══════════════════════════════════════════════
+SHARED
+═══════════════════════════════════════════════ */
+.wrap { max-width:1200px; margin:0 auto; padding:0 2.5rem; }
+.section { padding:8rem 2.5rem; position:relative; z-index:1; }
+.section.alt { background: var(--bg2); }
+.section.dark { background: var(--bg3); }
 
 .eyebrow {
 display:inline-flex; align-items:center; gap:0.5rem;
-font-family:var(–font-m); font-size:0.63rem; font-weight:500;
-color:var(–blue); letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem;
+font-family:var(--font-mono); font-size:0.65rem; font-weight:500;
+color:var(--blue); letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem;
 }
-.eyebrow::before { content:’’; width:18px; height:1px; background:var(–blue); }
+.eyebrow::before { content:''; width:20px; height:1px; background: var(--blue); }
+
+.display-h {
+font-family:var(--font-display); font-size:clamp(2.8rem,5vw,5rem);
+font-weight:800; line-height:0.95; letter-spacing:-1px;
+color:var(--text); text-transform:uppercase;
+}
+.display-h em { font-style:normal; color:var(--blue); }
+.display-h .dim { color:var(--text3); }
 
 .section-h {
-font-family:var(–font-d); font-size:clamp(2rem,4vw,3.5rem);
+font-family:var(--font-display); font-size:clamp(2rem,3.5vw,3.5rem);
 font-weight:700; line-height:1; letter-spacing:-0.5px;
-text-transform:uppercase; color:var(–text); margin-bottom:0.75rem;
+text-transform:uppercase; color:var(--text); margin-bottom:0.75rem;
 }
-.section-h em { font-style:normal; color:var(–blue); }
+.section-h em { font-style:normal; color:var(--blue); }
 
-.body-lg { font-size:1rem; font-weight:300; color:var(–text2); line-height:1.75; }
-.body-md { font-size:0.9rem; font-weight:300; color:var(–text2); line-height:1.7; }
+.body-lg { font-size:1.05rem; font-weight:300; color:var(--text2); line-height:1.75; }
+.body-md { font-size:0.92rem; font-weight:300; color:var(--text2); line-height:1.7; }
 
-.btn-p {
-display:inline-block; font-family:var(–font-m); font-size:0.75rem; font-weight:600;
-letter-spacing:1.5px; text-transform:uppercase; padding:0.95rem 2rem;
-background:var(–blue); color:var(–bg); border:1px solid var(–blue);
+.btn-primary {
+display:inline-block; font-family:var(--font-mono); font-size:0.75rem; font-weight:600;
+letter-spacing:1.5px; text-transform:uppercase; padding:1rem 2.25rem;
+background: var(--blue); color:var(--bg); border:1px solid var(--blue);
 border-radius:3px; cursor:pointer; transition:all 0.22s; text-decoration:none;
-width:100%; text-align:center;
 }
-.btn-p:hover { background:transparent; color:var(–blue); box-shadow:0 0 30px var(–blue-glow); }
-.btn-g {
-display:inline-block; font-family:var(–font-m); font-size:0.75rem; font-weight:500;
-letter-spacing:1.5px; text-transform:uppercase; padding:0.95rem 2rem;
-background:transparent; color:var(–text2); border:1px solid var(–border2);
+.btn-primary:hover { background:transparent; color:var(--blue); box-shadow:0 0 30px var(--blue-glow); }
+.btn-ghost {
+display:inline-block; font-family:var(--font-mono); font-size:0.75rem; font-weight:500;
+letter-spacing:1.5px; text-transform:uppercase; padding:1rem 2.25rem;
+background:transparent; color:var(--text2); border:1px solid var(--border2);
 border-radius:3px; cursor:pointer; transition:all 0.22s; text-decoration:none;
-width:100%; text-align:center;
 }
-.btn-g:hover { color:var(–text); border-color:rgba(240,244,248,0.3); }
-
+.btn-ghost:hover { color:var(--text); border-color:rgba(240,244,248,0.3); }
 /* FIX #11: Button row — full width on mobile, inline on desktop */
 .btn-row { display:flex; gap:0.75rem; flex-direction:column; }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
 HERO
-═══════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .hero {
-min-height:100vh; padding:80px 1.5rem 4rem;
+min-height:100vh; padding:80px 2.5rem 6rem;
 display:flex; flex-direction:column; justify-content:center;
 position:relative; overflow:hidden;
 }
-.hero-bg { position:absolute; inset:0; z-index:0; background:radial-gradient(ellipse 80% 60% at 60% 40%, rgba(14,165,233,0.06) 0%, transparent 60%), var(–bg); }
-.hero-grid { position:absolute; inset:0; z-index:0; background-image:linear-gradient(rgba(14,165,233,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(14,165,233,0.035) 1px, transparent 1px); background-size:80px 80px; }
-.hero-scan { position:absolute; left:0; right:0; height:1px; z-index:0; background:linear-gradient(90deg,transparent,rgba(14,165,233,0.5),transparent); animation:scan 8s ease-in-out infinite; }
+
+/* Animated gradient background */
+.hero-bg {
+position:absolute; inset:0; z-index:0;
+background:
+radial-gradient(ellipse 80% 60% at 60% 40%, rgba(14,165,233,0.06) 0%, transparent 60%),
+radial-gradient(ellipse 40% 40% at 10% 80%, rgba(14,165,233,0.04) 0%, transparent 50%),
+var(--bg);
+}
+
+/* Grid lines */
+.hero-grid {
+position:absolute; inset:0; z-index:0;
+background-image:
+linear-gradient(rgba(14,165,233,0.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(14,165,233,0.04) 1px, transparent 1px);
+background-size:80px 80px;
+}
+
+/* Scanline */
+.hero-scan {
+position:absolute; left:0; right:0; height:1px; z-index:0;
+background:linear-gradient(90deg,transparent,rgba(14,165,233,0.5),transparent);
+animation:scan 8s ease-in-out infinite;
+}
 @keyframes scan { 0%{top:0;opacity:0} 5%{opacity:1} 95%{opacity:0.6} 100%{top:100%;opacity:0} }
 
-.hero-inner { max-width:1400px; margin:0 auto; width:100%; position:relative; z-index:1; }
-
-.hero-kicker { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.75rem; }
-.kicker-dot { width:8px; height:8px; border-radius:50%; background:var(–blue); animation:bpulse 2s ease-in-out infinite; flex-shrink:0; }
-@keyframes bpulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,165,233,0.4)} 50%{opacity:0.7;box-shadow:0 0 0 6px rgba(14,165,233,0)} }
-.kicker-text { font-family:var(–font-m); font-size:0.65rem; font-weight:500; color:var(–blue); letter-spacing:2.5px; text-transform:uppercase; }
-
-/* FIX #6: Audience pills — wrap cleanly */
-.aud-pills { display:flex; gap:0.5rem; margin-bottom:2rem; flex-wrap:wrap; }
-.aud-pill {
-font-family:var(–font-m); font-size:0.68rem; font-weight:500;
-padding:0.4rem 0.9rem; border-radius:2px; border:1px solid var(–border2);
-color:var(–text2); cursor:pointer; transition:all 0.2s; background:transparent;
+.hero-inner {
+max-width:1400px; margin:0 auto; width:100%;
+position:relative; z-index:1;
+display:grid; grid-template-columns:1fr 520px; gap:5rem; align-items:center;
 }
-.aud-pill:hover { color:var(–text); border-color:rgba(14,165,233,0.4); }
-.aud-pill.active { background:var(–blue); border-color:var(–blue); color:var(–bg); font-weight:600; }
+
+.hero-kicker {
+display:flex; align-items:center; gap:0.75rem; margin-bottom:2rem;
+}
+.kicker-dot { width:8px; height:8px; border-radius:50%; background: var(--blue); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,165,233,0.4)} 50%{opacity:0.7;box-shadow:0 0 0 6px rgba(14,165,233,0)} }
+.kicker-text { font-family:var(--font-mono); font-size:0.68rem; font-weight:500; color:var(--blue); letter-spacing:2.5px; text-transform:uppercase; }
+
+/* Audience switcher */
+.aud-pills { display:flex; gap:0.5rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+.aud-pill {
+font-family:var(--font-mono); font-size:0.68rem; font-weight:500;
+padding:0.35rem 1rem; border-radius:2px; border:1px solid var(--border2);
+color:var(--text2); cursor:pointer; transition:all 0.2s; background:transparent;
+letter-spacing:0.5px;
+}
+.aud-pill:hover { color:var(--text); border-color:rgba(14,165,233,0.4); }
+.aud-pill.active { background: var(--blue); border-color:var(--blue); color:var(--bg); font-weight:600; }
 
 /* FIX #2: Hero message — always visible when active */
 .hero-msg { display:none; }
 .hero-msg.active { display:block !important; animation:fadeUp 0.5s ease-out; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
 .hero-h1 {
-font-family:var(–font-d); font-weight:800; text-transform:uppercase;
-font-size:clamp(2.8rem,8vw,5.5rem); line-height:0.95; letter-spacing:-1px;
-margin-bottom:1.5rem; color:var(–text);
+font-family:var(--font-display); font-weight:800; text-transform:uppercase;
+font-size:clamp(3rem,6vw,5.5rem); line-height:0.92; letter-spacing:-1px;
+margin-bottom:1.75rem;
 }
-.hero-h1 em { font-style:normal; color:var(–blue); display:block; text-shadow:0 0 40px rgba(14,165,233,0.3); }
-.hero-sub { font-size:1rem; font-weight:300; color:var(–text2); line-height:1.75; margin-bottom:2rem; max-width:580px; }
+.hero-h1 em { font-style:normal; color:var(--blue); display:block; text-shadow:0 0 40px rgba(14,165,233,0.3); }
 
-/* FIX #6,8: Manifesto — horizontal on desktop, clean wrap on mobile */
+.hero-sub { font-size:1.1rem; font-weight:300; color:var(--text2); max-width:560px; line-height:1.75; margin-bottom:2.5rem; }
+
+/* Manifesto line */
 .manifesto {
-margin-top:2.5rem; padding-top:1.75rem;
-border-top:1px solid var(–border3);
-display:flex; gap:1.5rem; flex-wrap:wrap; align-items:center;
+margin-top:3.5rem; padding-top:2rem;
+border-top:1px solid var(--border3);
+display:flex; gap:2rem; flex-wrap:wrap;
 }
-.manifesto-item { font-family:var(–font-m); font-size:0.7rem; color:var(–text3); letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
-.manifesto-item strong { color:var(–blue); font-weight:500; }
+.manifesto-item { font-family:var(--font-mono); font-size:0.72rem; color:var(--text3); letter-spacing:1px; text-transform:uppercase; }
+.manifesto-item strong { color:var(--blue); font-weight:500; }
 
-/* ═══════════════════════════════════════
-ARCHITECTURE DIAGRAM
-═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+LIVE ARCHITECTURE DIAGRAM
+═══════════════════════════════════════════════ */
 .arch-diagram {
-background:var(–surface); border:1px solid var(–border2);
-border-radius:8px; overflow:hidden; position:relative; margin-top:3rem;
+background: var(--surface); border:1px solid var(--border2);
+border-radius:8px; overflow:hidden; position:relative;
 }
-.arch-diagram::before { content:’’; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(–blue),transparent); }
-.arch-header { padding:0.9rem 1.25rem; border-bottom:1px solid var(–border); display:flex; align-items:center; gap:0.5rem; }
+.arch-diagram::before {
+content:''; position:absolute; top:0; left:0; right:0; height:2px;
+background:linear-gradient(90deg,transparent,var(--blue),transparent);
+}
+.arch-header {
+padding:0.9rem 1.25rem; border-bottom:1px solid var(--border);
+display:flex; align-items:center; gap:0.5rem;
+}
 .arch-dot { width:8px; height:8px; border-radius:50%; }
-.arch-title { font-family:var(–font-m); font-size:0.6rem; color:var(–text3); letter-spacing:1px; margin-left:auto; }
-.arch-body { padding:1.25rem; }
-#arch-svg { width:100%; height:300px; }
-.arch-status { padding:0.75rem 1.25rem; border-top:1px solid var(–border); display:flex; align-items:center; gap:0.75rem; }
-.status-dot { width:6px; height:6px; border-radius:50%; background:var(–green); animation:bpulse 1.5s infinite; }
-.status-text { font-family:var(–font-m); font-size:0.6rem; color:var(–text3); }
+.arch-title { font-family:var(--font-mono); font-size:0.62rem; color:var(--text3); letter-spacing:1px; margin-left:auto; }
+.arch-body { padding:1.5rem; }
 
-/* ═══════════════════════════════════════
-POSITIONING BAR
-═══════════════════════════════════════ */
-.pos-bar { background:var(–bg3); border-top:1px solid var(–border); border-bottom:1px solid var(–border); padding:2rem 1.5rem; }
-.pos-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
-.pos-statement { font-family:var(–font-d); font-size:clamp(1.3rem,3vw,2rem); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(–text); }
-.pos-statement em { font-style:normal; color:var(–blue); }
-.pos-divider { width:1px; height:40px; background:var(–border2); flex-shrink:0; }
-/* FIX #3: Positioning subtitle contrast */
-.pos-sub { font-family:var(–font-m); font-size:0.78rem; color:var(–text2); letter-spacing:0.3px; max-width:300px; line-height:1.6; }
+/* SVG diagram */
+#arch-svg { width:100%; height:320px; }
 
-/* ═══════════════════════════════════════
+/* Status bar */
+.arch-status {
+padding:0.75rem 1.25rem; border-top:1px solid var(--border);
+display:flex; align-items:center; gap:0.75rem;
+}
+.status-dot { width:6px; height:6px; border-radius:50%; background: var(--green); animation:pulse 1.5s infinite; }
+.status-text { font-family:var(--font-mono); font-size:0.62rem; color:var(--text3); letter-spacing:0.5px; }
+
+/* ═══════════════════════════════════════════════
+POSITIONING STATEMENT
+═══════════════════════════════════════════════ */
+.positioning-bar {
+background: var(--bg3); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+padding:2rem 2.5rem;
+}
+.positioning-inner {
+max-width:1200px; margin:0 auto;
+display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap;
+}
+.pos-statement {
+font-family:var(--font-display); font-size:clamp(1.4rem,2.5vw,2rem);
+font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text);
+}
+.pos-statement em { font-style:normal; color:var(--blue); }
+.pos-divider { width:1px; height:40px; background: var(--border2); flex-shrink:0; }
+.pos-sub { font-family:var(--font-mono); font-size:0.75rem; color:var(--text3); letter-spacing:0.5px; max-width:300px; }
+
+/* ═══════════════════════════════════════════════
 NUMBERS STRIP
-═══════════════════════════════════════ */
-.numbers-strip { background:var(–surface); border-top:1px solid var(–border); border-bottom:1px solid var(–border); }
+═══════════════════════════════════════════════ */
+.numbers-strip {
+background: var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+padding:0;
+}
 .numbers-inner { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); }
-.num-item { padding:2rem 1.5rem; border-right:1px solid var(–border); position:relative; overflow:hidden; }
+.num-item {
+padding:2.5rem 2rem; border-right:1px solid var(--border);
+position:relative; overflow:hidden;
+}
 .num-item:last-child { border-right:none; }
-.num-item::before { content:’’; position:absolute; bottom:0; left:0; right:0; height:2px; background:var(–blue); transform:scaleX(0); transition:transform 0.4s; transform-origin:left; }
+.num-item::before { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--blue); transform:scaleX(0); transition:transform 0.4s; transform-origin:left; }
 .num-item:hover::before { transform:scaleX(1); }
-.num-val { font-family:var(–font-d); font-size:clamp(2rem,4vw,3.5rem); font-weight:800; line-height:1; letter-spacing:-1px; margin-bottom:0.5rem; }
-.num-val.blue{color:var(–blue)} .num-val.amber{color:var(–amber)} .num-val.red{color:var(–red)} .num-val.green{color:var(–green)}
-/* FIX #4: Number labels contrast */
-.num-label { font-family:var(–font-m); font-size:0.62rem; color:var(–text2); letter-spacing:0.5px; text-transform:uppercase; line-height:1.6; }
+.num-val {
+font-family:var(--font-display); font-size:3.5rem; font-weight:800;
+line-height:1; letter-spacing:-2px; margin-bottom:0.4rem;
+}
+.num-val.blue { color:var(--blue); }
+.num-val.amber { color:var(--amber); }
+.num-val.red { color:var(--red); }
+.num-val.green { color:var(--green); }
+.num-label { font-family:var(--font-mono); font-size:0.65rem; color:var(--text3); letter-spacing:1px; text-transform:uppercase; line-height:1.5; }
 
-/* ═══════════════════════════════════════
-PROBLEM
-═══════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+PROBLEM SECTION
+═══════════════════════════════════════════════ */
 .problem-layout { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
-.problem-statement { font-family:var(–font-d); font-size:clamp(1.5rem,2.5vw,2.2rem); font-weight:700; text-transform:uppercase; line-height:1.1; color:var(–text); margin-bottom:1.25rem; }
-.problem-statement em { font-style:normal; color:var(–amber); }
-.prob-items { display:flex; flex-direction:column; margin-top:2rem; }
-.prob-item { display:flex; gap:1.25rem; padding:1.4rem 0; border-bottom:1px solid var(–border3); align-items:flex-start; }
-.prob-item:first-child { border-top:1px solid var(–border3); }
-.prob-icon { width:40px; height:40px; flex-shrink:0; border:1px solid var(–border2); border-radius:4px; display:flex; align-items:center; justify-content:center; background:var(–surface); }
+
+.problem-statement {
+font-family:var(--font-display); font-size:clamp(1.6rem,2.5vw,2.2rem);
+font-weight:700; text-transform:uppercase; line-height:1.1;
+color:var(--text); margin-bottom:1.5rem; letter-spacing:0.5px;
+}
+.problem-statement em { font-style:normal; color:var(--amber); }
+
+.problem-items { display:flex; flex-direction:column; gap:0; margin-top:2rem; }
+.prob-item {
+display:flex; gap:1.25rem; padding:1.5rem 0;
+border-bottom:1px solid var(--border3); align-items:flex-start;
+transition:background 0.2s;
+}
+.prob-item:first-child { border-top:1px solid var(--border3); }
+.prob-icon {
+width:40px; height:40px; flex-shrink:0; border:1px solid var(--border2);
+border-radius:4px; display:flex; align-items:center; justify-content:center;
+background: var(--surface);
+}
 .prob-icon svg { width:18px; height:18px; }
-.prob-icon.r svg{color:var(–red)} .prob-icon.a svg{color:var(–amber)} .prob-icon.b svg{color:var(–blue)}
-.prob-text h4 { font-family:var(–font-d); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(–text); margin-bottom:0.3rem; }
-.prob-text p { font-size:0.86rem; color:var(–text2); line-height:1.65; }
-.stat-feature { background:var(–surface); border:1px solid var(–border2); border-radius:6px; padding:2.5rem; position:relative; overflow:hidden; }
-.stat-feature::after { content:’’; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(–amber),transparent); }
-.stat-big { font-family:var(–font-d); font-size:7rem; font-weight:800; color:var(–amber); line-height:0.9; letter-spacing:-4px; margin-bottom:0.5rem; }
-.stat-feature h4 { font-family:var(–font-d); font-size:1.3rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(–text); margin-bottom:0.75rem; }
-.stat-feature > p { font-size:0.88rem; color:var(–text2); line-height:1.7; }
+.prob-icon.r svg { color:var(--red); } .prob-icon.a svg { color:var(--amber); } .prob-icon.b svg { color:var(--blue); }
+.prob-text h4 { font-family:var(--font-display); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); margin-bottom:0.3rem; }
+.prob-text p { font-size:0.87rem; color:var(--text2); line-height:1.6; }
+
+/* Big stat card */
+.stat-feature {
+background: var(--surface); border:1px solid var(--border2);
+border-radius:6px; padding:2.5rem; position:relative; overflow:hidden;
+}
+.stat-feature::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--amber),transparent); }
+.stat-big { font-family:var(--font-display); font-size:8rem; font-weight:800; color:var(--amber); line-height:0.9; letter-spacing:-5px; margin-bottom:0.5rem; }
+.stat-feature h4 { font-family:var(--font-display); font-size:1.3rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text); margin-bottom:0.75rem; }
+.stat-feature p { font-size:0.9rem; color:var(--text2); line-height:1.7; }
 .cost-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.5rem; }
-.cost-cell { background:var(–bg3); border:1px solid var(–border); border-radius:4px; padding:1rem; }
-.cost-val { font-family:var(–font-d); font-size:1.8rem; font-weight:700; color:var(–red); letter-spacing:-1px; margin-bottom:0.3rem; }
-/* FIX #5: Cost label contrast */
-.cost-lbl { font-family:var(–font-m); font-size:0.62rem; color:var(–text2); letter-spacing:0.3px; text-transform:uppercase; line-height:1.6; }
-.warn-bar { margin-top:1.5rem; padding:0.85rem 1rem; background:var(–amber-dim); border:1px solid rgba(245,158,11,0.25); border-radius:3px; font-family:var(–font-m); font-size:0.68rem; color:var(–amber); }
-.info-block { margin-top:1.5rem; padding:1.25rem; background:var(–surface); border:1px solid var(–border); border-radius:4px; font-size:0.87rem; color:var(–text2); line-height:1.7; }
+.cost-cell { background: var(--bg3); border:1px solid var(--border); border-radius:4px; padding:1.1rem; }
+.cost-val { font-family:var(--font-display); font-size:1.8rem; font-weight:700; color:var(--red); letter-spacing:-1px; margin-bottom:0.2rem; }
+.cost-lbl { font-family:var(--font-mono); font-size:0.6rem; color:var(--text3); letter-spacing:0.5px; text-transform:uppercase; line-height:1.5; }
+.warn-bar { margin-top:1.5rem; padding:0.85rem 1rem; background: var(--amber-dim); border:1px solid rgba(245,158,11,0.2); border-radius:3px; font-family:var(--font-mono); font-size:0.68rem; color:var(--amber); letter-spacing:0.5px; }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
 WHAT IT IS
-═══════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .what-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:2.5rem; }
-.plane-card { background:var(–surface); border:1px solid var(–border2); border-radius:6px; padding:2rem; position:relative; overflow:hidden; transition:border-color 0.25s,transform 0.25s; }
+.plane-card {
+background: var(--surface); border:1px solid var(--border2);
+border-radius:6px; padding:2.25rem; position:relative; overflow:hidden;
+transition:border-color 0.25s, transform 0.25s;
+}
 .plane-card:hover { border-color:rgba(14,165,233,0.4); transform:translateY(-3px); }
-.plane-card.cp::before { content:’’; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(90deg,var(–blue),transparent); }
-.plane-card.ep::before { content:’’; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(90deg,var(–green),transparent); }
-.plane-tag { font-family:var(–font-m); font-size:0.6rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.6rem; }
-.plane-card.cp .plane-tag{color:var(–blue)} .plane-card.ep .plane-tag{color:var(–green)}
-.plane-card h4 { font-family:var(–font-d); font-size:1.3rem; font-weight:700; text-transform:uppercase; color:var(–text); margin-bottom:0.75rem; }
-.plane-card > p { font-size:0.86rem; color:var(–text2); line-height:1.7; margin-bottom:1rem; }
+.plane-card.cp::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),transparent); }
+.plane-card.ep::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--green),transparent); }
+.plane-tag { font-family:var(--font-mono); font-size:0.6rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; margin-bottom:0.6rem; }
+.plane-card.cp .plane-tag { color:var(--blue); }
+.plane-card.ep .plane-tag { color:var(--green); }
+.plane-card h4 { font-family:var(--font-display); font-size:1.3rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); margin-bottom:0.75rem; }
+.plane-card > p { font-size:0.87rem; color:var(--text2); line-height:1.7; margin-bottom:1rem; }
 .plane-list { list-style:none; }
-.plane-list li { display:flex; gap:0.5rem; font-size:0.82rem; color:var(–text2); padding:0.35rem 0; border-bottom:1px solid var(–border3); }
+.plane-list li { display:flex; gap:0.5rem; font-size:0.83rem; color:var(--text2); padding:0.35rem 0; border-bottom:1px solid var(--border3); }
 .plane-list li:last-child { border-bottom:none; }
-.plane-list li::before { content:‘→’; font-family:var(–font-m); font-size:0.68rem; flex-shrink:0; margin-top:0.1rem; }
-.plane-card.cp .plane-list li::before{color:var(–blue)} .plane-card.ep .plane-list li::before{color:var(–green)}
-.key-insight { background:var(–blue-dim); border:1px solid var(–border2); border-radius:6px; padding:1.75rem 2rem; text-align:center; margin-bottom:2.5rem; }
-.key-insight p { font-family:var(–font-d); font-size:clamp(1.1rem,2vw,1.5rem); font-weight:700; text-transform:uppercase; color:var(–text); line-height:1.3; }
-.key-insight p em { font-style:normal; color:var(–blue); }
+.plane-list li::before { content:'→'; font-family:var(--font-mono); font-size:0.68rem; flex-shrink:0; margin-top:0.1rem; }
+.plane-card.cp .plane-list li::before { color:var(--blue); }
+.plane-card.ep .plane-list li::before { color:var(--green); }
+
+.key-insight {
+background: var(--blue-dim); border:1px solid var(--border2);
+border-radius:6px; padding:2rem 2.5rem; text-align:center; margin-bottom:3rem;
+}
+.key-insight p { font-family:var(--font-display); font-size:clamp(1.2rem,2vw,1.6rem); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); line-height:1.3; }
+.key-insight p em { font-style:normal; color:var(--blue); }
+
 .props-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
-.prop-card { background:var(–surface); border:1px solid var(–border); border-radius:4px; padding:1.25rem; transition:border-color 0.2s; }
-.prop-card:hover { border-color:var(–border2); }
-.prop-key { font-family:var(–font-m); font-size:0.6rem; font-weight:600; color:var(–blue); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.4rem; }
-.prop-val { font-size:0.82rem; color:var(–text2); line-height:1.6; }
+.prop-card { background: var(--surface); border:1px solid var(--border); border-radius:4px; padding:1.25rem; transition:border-color 0.2s; }
+.prop-card:hover { border-color:var(--border2); }
+.prop-key { font-family:var(--font-mono); font-size:0.6rem; font-weight:600; color:var(--blue); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.4rem; }
+.prop-val { font-size:0.83rem; color:var(--text2); line-height:1.6; }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
 HOW IT WORKS
-═══════════════════════════════════════ */
-.flow-track { display:grid; grid-template-columns:repeat(5,1fr); position:relative; margin-bottom:3.5rem; gap:1rem; }
-.flow-node { text-align:center; padding:0 0.25rem; }
-.flow-num { width:52px; height:52px; border-radius:50%; background:var(–surface); border:2px solid var(–border2); display:flex; align-items:center; justify-content:center; font-family:var(–font-d); font-size:1.3rem; font-weight:800; color:var(–blue); margin:0 auto 1rem; transition:all 0.3s; }
-.flow-node:hover .flow-num { background:var(–blue-dim); border-color:var(–blue); box-shadow:0 0 20px var(–blue-glow); }
-.flow-node h4 { font-family:var(–font-d); font-size:0.9rem; font-weight:700; text-transform:uppercase; color:var(–text); margin-bottom:0.4rem; }
-.flow-node p { font-size:0.76rem; color:var(–text2); line-height:1.6; }
-.proto-pills { display:flex; flex-wrap:wrap; gap:0.25rem; justify-content:center; margin-top:0.4rem; }
-.proto-pill { font-family:var(–font-m); font-size:0.58rem; font-weight:600; padding:0.15rem 0.4rem; background:var(–blue-dim); color:var(–blue); border-radius:2px; border:1px solid var(–border2); }
-.teardown-bar { display:flex; gap:1.25rem; align-items:center; padding:1.5rem; background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:4px; margin-bottom:2.5rem; }
-.teardown-icon { font-family:var(–font-d); font-size:2rem; font-weight:800; color:var(–green); flex-shrink:0; }
-.teardown-bar p { font-size:0.88rem; color:var(–text2); line-height:1.65; }
-.teardown-bar strong { color:var(–green); }
-.haystack-block { display:grid; grid-template-columns:1fr 1fr; background:var(–surface); border:1px solid var(–border2); border-radius:6px; overflow:hidden; margin-bottom:2.5rem; }
-.haystack-left { padding:3rem; background:var(–bg3); border-right:1px solid var(–border2); display:flex; flex-direction:column; justify-content:center; }
-.haystack-quote { font-family:var(–font-d); font-size:clamp(1.6rem,3vw,2.6rem); font-weight:800; text-transform:uppercase; line-height:1.05; color:var(–text); }
-.haystack-quote em { font-style:normal; color:var(–blue); display:block; }
-.haystack-right { padding:3rem; }
-.haystack-right p { font-size:0.9rem; color:var(–text2); line-height:1.75; margin-bottom:1.1rem; }
+═══════════════════════════════════════════════ */
+.flow-track {
+display:grid; grid-template-columns:repeat(5,1fr);
+position:relative; margin-bottom:4rem;
+}
+.flow-track::before {
+content:''; position:absolute; top:28px; left:10%; right:10%; height:1px;
+background:linear-gradient(90deg,transparent,var(--blue),var(--blue),var(--blue),transparent);
+opacity:0.3;
+}
+.flow-node { text-align:center; padding:0 0.5rem; position:relative; }
+.flow-num {
+width:56px; height:56px; border-radius:50%;
+background: var(--surface); border:2px solid var(--border2);
+display:flex; align-items:center; justify-content:center;
+font-family:var(--font-display); font-size:1.4rem; font-weight:800; color:var(--blue);
+margin:0 auto 1.25rem; position:relative; z-index:1; transition:all 0.3s;
+}
+.flow-node:hover .flow-num { background: var(--blue-dim); border-color:var(--blue); box-shadow:0 0 20px var(--blue-glow); }
+.flow-node h4 { font-family:var(--font-display); font-size:0.95rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); margin-bottom:0.5rem; }
+.flow-node p { font-size:0.78rem; color:var(--text2); line-height:1.6; }
+.proto-pills { display:flex; flex-wrap:wrap; gap:0.25rem; justify-content:center; margin-top:0.5rem; }
+.proto-pill { font-family:var(--font-mono); font-size:0.58rem; font-weight:600; padding:0.15rem 0.4rem; background: var(--blue-dim); color:var(--blue); border-radius:2px; border:1px solid var(--border2); }
 
-/* ═══════════════════════════════════════
+/* Haystack section */
+.haystack-block {
+display:grid; grid-template-columns:1fr 1fr; gap:0;
+background: var(--surface); border:1px solid var(--border2); border-radius:6px; overflow:hidden;
+margin-bottom:3rem;
+}
+.haystack-left {
+padding:3.5rem; background: var(--bg3); border-right:1px solid var(--border2);
+display:flex; flex-direction:column; justify-content:center;
+}
+.haystack-quote {
+font-family:var(--font-display); font-size:clamp(1.8rem,3vw,2.8rem);
+font-weight:800; text-transform:uppercase; line-height:1.05; letter-spacing:-0.5px;
+color:var(--text);
+}
+.haystack-quote em { font-style:normal; color:var(--blue); display:block; }
+.haystack-right { padding:3.5rem; }
+.haystack-right p { font-size:0.92rem; color:var(--text2); line-height:1.75; margin-bottom:1.25rem; }
+.haystack-right p:last-of-type { margin-bottom:1.75rem; }
+
+/* Teardown */
+.teardown-bar {
+display:flex; gap:1.5rem; align-items:center;
+padding:1.5rem 2rem; background:rgba(16,185,129,0.06);
+border:1px solid rgba(16,185,129,0.2); border-radius:4px; margin-bottom:3rem;
+}
+.teardown-icon { font-family:var(--font-display); font-size:2rem; font-weight:800; color:var(--green); flex-shrink:0; }
+.teardown-bar p { font-size:0.9rem; color:var(--text2); line-height:1.65; }
+.teardown-bar strong { color:var(--green); }
+
+/* ═══════════════════════════════════════════════
 PERSONAS
-═══════════════════════════════════════ */
+═══════════════════════════════════════════════ */
 .personas-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
-.persona-card { background:var(–surface); border:1px solid var(–border2); border-radius:6px; padding:2rem; position:relative; overflow:hidden; transition:border-color 0.25s,transform 0.25s; }
+.persona-card {
+background: var(--surface); border:1px solid var(--border2); border-radius:6px;
+padding:2rem; position:relative; overflow:hidden;
+transition:border-color 0.25s, transform 0.25s;
+}
 .persona-card:hover { border-color:rgba(14,165,233,0.4); transform:translateY(-4px); }
-.persona-card::before { content:’’; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(90deg,var(–blue),transparent); }
-.persona-ico { width:42px; height:42px; background:var(–blue-dim); border:1px solid var(–border2); border-radius:4px; display:flex; align-items:center; justify-content:center; margin-bottom:1.1rem; }
-.persona-ico svg { width:20px; height:20px; color:var(–blue); }
-.persona-card h3 { font-family:var(–font-d); font-size:1.15rem; font-weight:700; text-transform:uppercase; color:var(–text); margin-bottom:0.2rem; }
-.persona-role { font-family:var(–font-m); font-size:0.63rem; color:var(–blue); letter-spacing:0.3px; margin-bottom:1.1rem; }
-.pain-block { background:var(–bg3); border:1px solid var(–border); border-radius:3px; padding:0.85rem 1rem; margin-bottom:0.85rem; }
-.pain-label { font-family:var(–font-m); font-size:0.58rem; font-weight:600; color:var(–red); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.3rem; }
-.pain-block p { font-size:0.81rem; color:var(–text2); line-height:1.6; }
-.value-label { font-family:var(–font-m); font-size:0.58rem; font-weight:600; color:var(–green); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.3rem; }
-.value-block p { font-size:0.81rem; color:var(–text); line-height:1.6; }
-.not-a-block { margin-top:3rem; padding:2.5rem; text-align:center; background:var(–surface); border:1px solid var(–border2); border-radius:6px; }
-.not-a-block h3 { font-family:var(–font-d); font-size:clamp(1.4rem,3vw,2.4rem); font-weight:800; text-transform:uppercase; color:var(–text); margin-bottom:0.75rem; }
-.not-a-block h3 em { font-style:normal; color:var(–blue); }
-.not-a-block p { font-size:0.92rem; color:var(–text2); max-width:620px; margin:0 auto; line-height:1.75; }
+.persona-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),transparent); }
+.persona-ico { width:44px; height:44px; background: var(--blue-dim); border:1px solid var(--border2); border-radius:4px; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; }
+.persona-ico svg { width:22px; height:22px; color:var(--blue); }
+.persona-card h3 { font-family:var(--font-display); font-size:1.2rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); margin-bottom:0.2rem; }
+.persona-role { font-family:var(--font-mono); font-size:0.65rem; color:var(--blue); letter-spacing:0.5px; margin-bottom:1.25rem; }
+.pain-block { background: var(--bg3); border:1px solid var(--border); border-radius:3px; padding:0.85rem 1rem; margin-bottom:1rem; }
+.pain-label { font-family:var(--font-mono); font-size:0.58rem; font-weight:600; color:var(--red); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.3rem; }
+.pain-block p { font-size:0.82rem; color:var(--text2); line-height:1.6; }
+.value-label { font-family:var(--font-mono); font-size:0.58rem; font-weight:600; color:var(--green); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.35rem; }
+.value-block p { font-size:0.82rem; color:var(--text); line-height:1.6; }
 
-/* ═══════════════════════════════════════
-PROOF
-═══════════════════════════════════════ */
+.not-a-block {
+margin-top:3rem; padding:2.5rem 3rem; text-align:center;
+background: var(--surface); border:1px solid var(--border2); border-radius:6px;
+}
+.not-a-block h3 { font-family:var(--font-display); font-size:clamp(1.5rem,3vw,2.5rem); font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); margin-bottom:0.75rem; }
+.not-a-block h3 em { font-style:normal; color:var(--blue); }
+.not-a-block p { font-size:0.95rem; color:var(--text2); max-width:640px; margin:0 auto; line-height:1.75; }
+
+/* ═══════════════════════════════════════════════
+PROOF / IMPACT
+═══════════════════════════════════════════════ */
 .proof-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
-.proof-card { background:var(–surface); border:1px solid var(–border2); border-radius:6px; padding:2.25rem; position:relative; overflow:hidden; transition:border-color 0.25s,transform 0.25s; }
+.proof-card {
+background: var(--surface); border:1px solid var(--border2); border-radius:6px;
+padding:2.25rem; position:relative; overflow:hidden;
+transition:border-color 0.25s, transform 0.25s;
+}
 .proof-card:hover { border-color:rgba(14,165,233,0.4); transform:translateY(-5px); }
-.proof-card::before { content:’’; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(90deg,var(–blue),transparent); }
-.proof-logo { width:60px; height:60px; background:white; border-radius:6px; display:flex; align-items:center; justify-content:center; margin-bottom:1.25rem; overflow:hidden; padding:6px; }
+.proof-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--blue),transparent); }
+.proof-logo { width:64px; height:64px; background:white; border-radius:6px; display:flex; align-items:center; justify-content:center; margin-bottom:1.5rem; overflow:hidden; padding:8px; }
 .proof-logo img { width:100%; height:100%; object-fit:contain; }
-.proof-card h4 { font-family:var(–font-d); font-size:1.1rem; font-weight:700; text-transform:uppercase; color:var(–blue); margin-bottom:0.85rem; }
-.proof-quote { font-style:italic; font-size:0.95rem; color:var(–text); line-height:1.7; margin-bottom:1rem; padding-left:1rem; border-left:2px solid var(–blue); }
-.proof-result { background:var(–blue-dim); border:1px solid var(–border2); border-radius:3px; padding:0.75rem 1rem; font-size:0.81rem; color:var(–text); }
-.proof-cta { margin-top:3rem; display:grid; grid-template-columns:1fr 1fr; background:var(–surface); border:1px solid var(–border2); border-radius:6px; overflow:hidden; }
-.proof-cta-left { padding:2.5rem; border-right:1px solid var(–border2); }
-.proof-cta-left h3 { font-family:var(–font-d); font-size:1.8rem; font-weight:700; text-transform:uppercase; color:var(–text); margin-bottom:0.75rem; }
-.proof-cta-left p { font-size:0.88rem; color:var(–text2); line-height:1.7; margin-bottom:1.5rem; }
-.proof-cta-right { padding:2.5rem; display:flex; flex-direction:column; justify-content:center; gap:1.25rem; }
-.metric-row { display:flex; align-items:baseline; gap:0.75rem; }
-.metric-big { font-family:var(–font-d); font-size:2.8rem; font-weight:800; letter-spacing:-1px; line-height:1; }
-.metric-big.b{color:var(–blue)} .metric-big.g{color:var(–green)} .metric-big.a{color:var(–amber)}
-.metric-desc { font-family:var(–font-m); font-size:0.65rem; color:var(–text3); letter-spacing:0.5px; text-transform:uppercase; line-height:1.5; }
+.proof-card h4 { font-family:var(--font-display); font-size:1.1rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--blue); margin-bottom:1rem; }
+.proof-quote { font-style:italic; font-size:0.98rem; color:var(--text); line-height:1.7; margin-bottom:1.25rem; padding-left:1rem; border-left:2px solid var(--blue); }
+.proof-result { background: var(--blue-dim); border:1px solid var(--border2); border-radius:3px; padding:0.75rem 1rem; font-size:0.82rem; color:var(--text); }
 
-/* ═══════════════════════════════════════
+.proof-cta {
+margin-top:3rem; display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;
+background: var(--surface); border:1px solid var(--border2); border-radius:6px; overflow:hidden;
+}
+.proof-cta-left { padding:3rem; border-right:1px solid var(--border2); }
+.proof-cta-left h3 { font-family:var(--font-display); font-size:1.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text); margin-bottom:0.75rem; }
+.proof-cta-left p { font-size:0.9rem; color:var(--text2); line-height:1.7; margin-bottom:1.5rem; }
+.proof-cta-right { padding:3rem; display:flex; flex-direction:column; justify-content:center; gap:1rem; }
+.proof-cta-right .metric-row { display:flex; align-items:baseline; gap:0.75rem; }
+.metric-big { font-family:var(--font-display); font-size:3rem; font-weight:800; letter-spacing:-1px; line-height:1; }
+.metric-big.b{color:var(--blue)} .metric-big.g{color:var(--green)} .metric-big.a{color:var(--amber)}
+.metric-desc { font-family:var(--font-mono); font-size:0.68rem; color:var(--text3); letter-spacing:0.5px; text-transform:uppercase; }
+
+/* ═══════════════════════════════════════════════
 CONTACT
-═══════════════════════════════════════ */
-.contact-wrap { min-height:100vh; padding:100px 1.5rem 5rem; }
-.contact-inner { max-width:740px; margin:0 auto; }
-.contact-form { background:var(–surface); border:1px solid var(–border2); border-radius:6px; padding:2.5rem; position:relative; overflow:hidden; }
-.contact-form::before { content:’’; position:absolute; top:0;left:0;right:0;height:2px; background:linear-gradient(90deg,transparent,var(–blue),transparent); }
+═══════════════════════════════════════════════ */
+.contact-wrap { min-height:100vh; padding:110px 2.5rem 6rem; background: var(--bg); }
+.contact-inner { max-width:760px; margin:0 auto; }
+.contact-form {
+background: var(--surface); border:1px solid var(--border2);
+border-radius:6px; padding:3rem; position:relative; overflow:hidden;
+}
+.contact-form::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--blue),transparent); }
 .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.25rem; }
-.form-grid.s1 { grid-template-columns:1fr; }
+.form-grid.single { grid-template-columns:1fr; }
 .field { display:flex; flex-direction:column; gap:0.4rem; }
-.field label { font-family:var(–font-m); font-size:0.62rem; font-weight:600; color:var(–text3); letter-spacing:1.5px; text-transform:uppercase; }
-.field label .req { color:var(–blue); }
-.field input,.field textarea { background:var(–bg3); border:1px solid var(–border2); border-radius:3px; padding:0.8rem 1rem; color:var(–text); font-family:var(–font-b); font-size:0.9rem; transition:border-color 0.2s,box-shadow 0.2s; outline:none; }
-.field input::placeholder,.field textarea::placeholder { color:var(–text3); }
-.field input:focus,.field textarea:focus { border-color:var(–blue); box-shadow:0 0 0 3px var(–blue-dim); }
-.field textarea { min-height:120px; resize:vertical; }
-.form-submit { margin-top:1.75rem; }
-.form-submit button { font-family:var(–font-m); font-size:0.75rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:1rem 2.5rem; background:var(–blue); color:var(–bg); border:1px solid var(–blue); border-radius:3px; cursor:pointer; transition:all 0.22s; width:100%; }
-.form-submit button:hover { background:transparent; color:var(–blue); box-shadow:0 0 30px var(–blue-glow); }
+.field label { font-family:var(--font-mono); font-size:0.62rem; font-weight:600; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; }
+.field label .req { color:var(--blue); }
+.field input, .field textarea {
+background: var(--bg3); border:1px solid var(--border2); border-radius:3px;
+padding:0.8rem 1rem; color:var(--text); font-family:var(--font-body); font-size:0.9rem;
+transition:border-color 0.2s, box-shadow 0.2s; outline:none;
+}
+.field input::placeholder, .field textarea::placeholder { color:var(--text3); }
+.field input:focus, .field textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-dim); }
+.field textarea { min-height:130px; resize:vertical; }
+.form-submit { margin-top:2rem; }
+.form-submit button {
+font-family:var(--font-mono); font-size:0.75rem; font-weight:600;
+letter-spacing:2px; text-transform:uppercase; padding:1rem 2.5rem;
+background: var(--blue); color:var(--bg); border:1px solid var(--blue);
+border-radius:3px; cursor:pointer; transition:all 0.22s; width:100%;
+}
+.form-submit button:hover { background:transparent; color:var(--blue); box-shadow:0 0 30px var(--blue-glow); }
 .contact-meta { margin-top:2rem; text-align:center; display:flex; flex-direction:column; gap:0.4rem; }
-.contact-meta a,.contact-meta p { font-family:var(–font-m); font-size:0.72rem; color:var(–text3); text-decoration:none; }
-.contact-meta a:hover { color:var(–blue); }
+.contact-meta a, .contact-meta p { font-family:var(--font-mono); font-size:0.72rem; color:var(--text3); text-decoration:none; letter-spacing:0.5px; }
+.contact-meta a:hover { color:var(--blue); }
 
-/* ═══════════════════════════════════════
+/* ═══════════════════════════════════════════════
 FOOTER
-═══════════════════════════════════════ */
-footer { background:var(–bg3); border-top:1px solid var(–border); padding:2.5rem 1.5rem; }
-.footer-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap; }
+═══════════════════════════════════════════════ */
+footer { background: var(--bg3); border-top:1px solid var(--border); padding:3rem 2.5rem; }
+.footer-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:2rem; flex-wrap:wrap; }
 .footer-left { display:flex; align-items:center; gap:0.75rem; }
-.footer-left img { height:26px; opacity:0.45; }
-.footer-copy { font-family:var(–font-m); font-size:0.63rem; color:var(–text3); }
-/* FIX #12: Footer tagline — tighter on mobile */
-.footer-right { font-family:var(–font-m); font-size:0.63rem; color:var(–text3); text-align:right; }
+.footer-left img { height:28px; opacity:0.5; }
+.footer-copy { font-family:var(--font-mono); font-size:0.65rem; color:var(--text3); letter-spacing:0.5px; }
+.footer-right { font-family:var(--font-mono); font-size:0.65rem; color:var(--text3); letter-spacing:0.5px; text-align:right; }
 
-/* ═══════════════════════════════════════
-DESKTOP OVERRIDES
-═══════════════════════════════════════ */
-@media(min-width:701px) {
-.btn-row { flex-direction:row; }
-.btn-p, .btn-g { width:auto; }
-.hero-inner { display:grid; grid-template-columns:1fr 480px; gap:4rem; align-items:center; }
-.arch-diagram { margin-top:0; }
-.section { padding:7rem 2.5rem; }
-.wrap { padding:0 2.5rem; }
-.nav-wrap { padding:0 2.5rem; }
-.hero { padding:80px 2.5rem 5rem; }
-.contact-wrap { padding:110px 2.5rem 5rem; }
-footer { padding:2.5rem; }
-.pos-bar { padding:2rem 2.5rem; }
-.numbers-inner { max-width:1200px; margin:0 auto; }
+/* ═══════════════════════════════════════════════
+RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1100px){
+.hero-inner{grid-template-columns:1fr}
+.arch-diagram{display:none}
+}
+@media(max-width:900px){
+.problem-layout,.what-grid,.haystack-block,.proof-cta{grid-template-columns:1fr}
+.haystack-left{border-right:none;border-bottom:1px solid var(--border2)}
+.proof-cta-left{border-right:none;border-bottom:1px solid var(--border2)}
+.flow-track{grid-template-columns:1fr 1fr}
+.numbers-inner{grid-template-columns:1fr 1fr}
+.personas-grid,.proof-grid{grid-template-columns:1fr}
+.props-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+nav .nav-links{display:none}
+.hamburger{display:flex}
+.form-grid{grid-template-columns:1fr}
+.section{padding:5rem 1.5rem}
+.hero{padding:80px 1.5rem 5rem}
+.numbers-inner{grid-template-columns:1fr 1fr}
+.props-grid{grid-template-columns:1fr}
+.positioning-inner{flex-direction:column;gap:1rem}
+.pos-divider{display:none}
 }
 
-/* ═══════════════════════════════════════
-RESPONSIVE BREAKPOINTS
-═══════════════════════════════════════ */
-@media(max-width:1100px) {
-.hero-inner { grid-template-columns:1fr !important; }
-.arch-diagram { display:none; }
-}
-
-@media(max-width:900px) {
-.problem-layout { grid-template-columns:1fr; gap:3rem; }
-.what-grid { grid-template-columns:1fr; }
-.haystack-block { grid-template-columns:1fr; }
-.haystack-left { border-right:none; border-bottom:1px solid var(–border2); padding:2.5rem; }
-.haystack-right { padding:2.5rem; }
-.proof-cta { grid-template-columns:1fr; }
-.proof-cta-left { border-right:none; border-bottom:1px solid var(–border2); }
-.flow-track { grid-template-columns:1fr 1fr; gap:1.5rem; }
-.numbers-inner { grid-template-columns:1fr 1fr; }
-.personas-grid { grid-template-columns:1fr; }
-.proof-grid { grid-template-columns:1fr; }
-.props-grid { grid-template-columns:1fr 1fr; }
-}
-
-/* FIX #1: Mobile nav — hamburger */
-@media(max-width:700px) {
-.nav-links { display:none; }
-.hamburger { display:flex; }
-.form-grid { grid-template-columns:1fr; }
-.numbers-inner { grid-template-columns:1fr 1fr; }
-.props-grid { grid-template-columns:1fr; }
-.manifesto { gap:1rem; }
-.pos-inner { flex-direction:column; gap:0.75rem; align-items:flex-start; }
-.pos-divider { display:none; }
-.pos-sub { max-width:100%; }
-.footer-inner { flex-direction:column; align-items:flex-start; }
-.footer-right { text-align:left; }
-.flow-track { grid-template-columns:1fr; }
-.what-grid { grid-template-columns:1fr; }
-.personas-grid { grid-template-columns:1fr; }
-.proof-grid { grid-template-columns:1fr; }
-.proof-cta { grid-template-columns:1fr; }
-.proof-cta-left { border-right:none; border-bottom:1px solid var(–border2); }
-.haystack-block { grid-template-columns:1fr; }
-.haystack-left { border-right:none; border-bottom:1px solid var(–border2); }
+@media(min-width:701px){
+  .btn-row { flex-direction:row; }
+  .btn-primary, .btn-ghost { width:auto; }
+  .nav-wrap { padding:0 2.5rem; }
 }
 </style>
 
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     NAV
-═══════════════════════════════════════ -->
+<!-- NAV -->
 
 <nav>
   <div class="nav-wrap">
@@ -492,14 +632,11 @@ RESPONSIVE BREAKPOINTS
       <li><span onclick="goTo('impact')">Proven Impact</span></li>
       <li><span class="nav-cta" onclick="goTo('contact')">Get Started</span></li>
     </ul>
-    <!-- FIX #1: Hamburger button -->
     <button class="hamburger" id="hamburger" onclick="toggleMobile()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
-
-<!-- FIX #1: Mobile drawer -->
 
 <div class="mobile-menu" id="mobile-menu">
   <span onclick="goTo('home');closeMobile()">Home</span>
@@ -510,24 +647,18 @@ RESPONSIVE BREAKPOINTS
   <span class="m-cta" onclick="goTo('contact');closeMobile()">Get Started →</span>
 </div>
 
-<!-- ═══════════════════════════════════════
-     HOME
-═══════════════════════════════════════ -->
+<!-- ══════════════════════════════════
+     HOME PAGE
+══════════════════════════════════ -->
 
 <div id="home" class="page active">
+
+  <!-- HERO -->
 
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="hero-scan"></div>
-
-```
-<div class="hero-inner">
-  <div>
-    <div class="hero-kicker">
-      <span class="kicker-dot"></span>
-      <span class="kicker-text">Behavioral Orchestration Platform</span>
-    </div>
 
     <div class="aud-pills">
       <button class="aud-pill active" data-a="ops" onclick="aud('ops')">Range Operators</button>
@@ -535,13 +666,12 @@ RESPONSIVE BREAKPOINTS
       <button class="aud-pill" data-a="ciso" onclick="aud('ciso')">Security Leaders</button>
     </div>
 
-    <!-- FIX #2: All messages present, first active by default -->
     <div id="m-ops" class="hero-msg active">
       <h1 class="hero-h1">The easy button<em>for network traffic.</em></h1>
-      <p class="hero-sub">Deploy your containers. Define your behaviors. Hit play. Your environment comes alive with realistic, wire-level network activity — no scripts, no agents, no rebuilds.</p>
+      <p class="hero-sub">Deploy Animate Hosts, Define their behaviors, Hit play. Your environment comes alive with realistic, wire-level network activity — no scripts, no combursome agents, no rebuilds.</p>
       <div class="btn-row">
-        <span class="btn-p" onclick="goTo('contact')">Schedule a Pilot</span>
-        <span class="btn-g" onclick="goTo('how')">See How It Works</span>
+        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+        <span class="btn-ghost" onclick="goTo('how')">See How It Works</span>
       </div>
     </div>
 
@@ -549,21 +679,20 @@ RESPONSIVE BREAKPOINTS
       <h1 class="hero-h1">Kill the<em>10:1 engineering gap.</em></h1>
       <p class="hero-sub">Scenarios that took weeks are ready in hours. Behaviors become persistent assets — built once, reused indefinitely across every environment you run.</p>
       <div class="btn-row">
-        <span class="btn-p" onclick="goTo('contact')">Schedule a Pilot</span>
-        <span class="btn-g" onclick="goTo('who')">See the ROI</span>
+        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+        <span class="btn-ghost" onclick="goTo('who')">See the ROI</span>
       </div>
     </div>
 
     <div id="m-ciso" class="hero-msg">
       <h1 class="hero-h1">Zero agents.<em>Zero operational debt.</em></h1>
-      <p class="hero-sub">Animate operates as a guest on the wire. No software on target systems. No configuration drift. Stop when done — infrastructure stays pristine.</p>
+      <p class="hero-sub">Animate operates as a guest on the wire. No software on target systems. No configuration drift. Stop it when you're done — infrastructure stays pristine.</p>
       <div class="btn-row">
-        <span class="btn-p" onclick="goTo('contact')">Schedule a Pilot</span>
-        <span class="btn-g" onclick="goTo('what')">See the Architecture</span>
+        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+        <span class="btn-ghost" onclick="goTo('what')">See the Architecture</span>
       </div>
     </div>
 
-    <!-- FIX #6: Manifesto wraps cleanly -->
     <div class="manifesto">
       <span class="manifesto-item"><strong>Define once</strong></span>
       <span class="manifesto-item"><strong>Execute anywhere</strong></span>
@@ -571,7 +700,7 @@ RESPONSIVE BREAKPOINTS
     </div>
   </div>
 
-  <!-- Architecture diagram — hidden on mobile via CSS -->
+  <!-- Live Architecture Diagram -->
   <div class="arch-diagram">
     <div class="arch-header">
       <div class="arch-dot" style="background:#FF5F56"></div>
@@ -590,42 +719,60 @@ RESPONSIVE BREAKPOINTS
             <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
+
+        <!-- Control Plane box -->
         <rect x="120" y="20" width="200" height="70" rx="4" fill="rgba(14,165,233,0.08)" stroke="rgba(14,165,233,0.35)" stroke-width="1"/>
         <text x="220" y="42" text-anchor="middle" fill="rgba(14,165,233,0.6)" font-family="IBM Plex Mono" font-size="8" letter-spacing="2">CONTROL PLANE</text>
         <text x="220" y="60" text-anchor="middle" fill="#F0F4F8" font-family="IBM Plex Mono" font-size="9" font-weight="500">Scenario Studio</text>
-        <text x="220" y="74" text-anchor="middle" fill="rgba(240,244,248,0.4)" font-family="IBM Plex Mono" font-size="7">Orchestration Engine</text>
+        <text x="220" y="74" text-anchor="middle" fill="rgba(240,244,248,0.62)" font-family="IBM Plex Mono" font-size="7">Orchestration Engine</text>
+
+        <!-- Boundary line -->
         <line x1="30" y1="115" x2="410" y2="115" stroke="rgba(14,165,233,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
         <text x="30" y="111" fill="rgba(14,165,233,0.35)" font-family="IBM Plex Mono" font-size="7" letter-spacing="1">INTENT</text>
         <text x="30" y="130" fill="rgba(14,165,233,0.35)" font-family="IBM Plex Mono" font-size="7" letter-spacing="1">EXECUTION</text>
+
+        <!-- Connector lines from control plane -->
         <line x1="160" y1="90" x2="80" y2="155" stroke="rgba(14,165,233,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="220" y1="90" x2="220" y2="155" stroke="rgba(14,165,233,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
         <line x1="280" y1="90" x2="360" y2="155" stroke="rgba(14,165,233,0.25)" stroke-width="1" stroke-dasharray="3,3"/>
-        <rect x="30" y="155" width="100" height="55" rx="4" fill="rgba(13,21,38,0.9)" stroke="rgba(14,165,233,0.3)" stroke-width="1" id="h1"/>
+
+        <!-- Animate Host nodes -->
+        <rect x="30" y="155" width="100" height="55" rx="4" fill="rgba(13,21,38,0.9)" stroke="rgba(14,165,233,0.3)" stroke-width="1" class="ahost" id="h1"/>
         <text x="80" y="175" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7" letter-spacing="1">ANIMATE HOST</text>
-        <text x="80" y="190" text-anchor="middle" fill="rgba(240,244,248,0.7)" font-family="IBM Plex Mono" font-size="8">node-01</text>
-        <circle cx="80" cy="202" r="3" fill="#10B981"/>
-        <rect x="170" y="155" width="100" height="55" rx="4" fill="rgba(13,21,38,0.9)" stroke="rgba(14,165,233,0.3)" stroke-width="1" id="h2"/>
+        <text x="80" y="188" text-anchor="middle" fill="rgba(240,244,248,0.7)" font-family="IBM Plex Mono" font-size="8">node-01</text>
+        <circle cx="80" cy="200" r="3" fill="#10B981" id="d1"/>
+
+        <rect x="170" y="155" width="100" height="55" rx="4" fill="rgba(13,21,38,0.9)" stroke="rgba(14,165,233,0.3)" stroke-width="1" class="ahost" id="h2"/>
         <text x="220" y="175" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7" letter-spacing="1">ANIMATE HOST</text>
-        <text x="220" y="190" text-anchor="middle" fill="rgba(240,244,248,0.7)" font-family="IBM Plex Mono" font-size="8">node-02</text>
-        <circle cx="220" cy="202" r="3" fill="#10B981"/>
-        <rect x="310" y="155" width="100" height="55" rx="4" fill="rgba(13,21,38,0.9)" stroke="rgba(14,165,233,0.3)" stroke-width="1" id="h3"/>
+        <text x="220" y="188" text-anchor="middle" fill="rgba(240,244,248,0.7)" font-family="IBM Plex Mono" font-size="8">node-02</text>
+        <circle cx="220" cy="200" r="3" fill="#10B981" id="d2"/>
+
+        <rect x="310" y="155" width="100" height="55" rx="4" fill="rgba(13,21,38,0.9)" stroke="rgba(14,165,233,0.3)" stroke-width="1" class="ahost" id="h3"/>
         <text x="360" y="175" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7" letter-spacing="1">ANIMATE HOST</text>
-        <text x="360" y="190" text-anchor="middle" fill="rgba(240,244,248,0.7)" font-family="IBM Plex Mono" font-size="8">node-03</text>
-        <circle cx="360" cy="202" r="3" fill="#10B981"/>
+        <text x="360" y="188" text-anchor="middle" fill="rgba(240,244,248,0.7)" font-family="IBM Plex Mono" font-size="8">node-03</text>
+        <circle cx="360" cy="200" r="3" fill="#10B981" id="d3"/>
+
+        <!-- Protocol arrows down -->
         <line x1="60" y1="210" x2="60" y2="255" stroke="rgba(14,165,233,0.2)" stroke-width="1" marker-end="url(#arr)"/>
         <line x1="100" y1="210" x2="100" y2="255" stroke="rgba(14,165,233,0.2)" stroke-width="1" marker-end="url(#arr)"/>
         <line x1="200" y1="210" x2="200" y2="255" stroke="rgba(14,165,233,0.2)" stroke-width="1" marker-end="url(#arr)"/>
         <line x1="240" y1="210" x2="240" y2="255" stroke="rgba(14,165,233,0.2)" stroke-width="1" marker-end="url(#arr)"/>
         <line x1="340" y1="210" x2="340" y2="255" stroke="rgba(14,165,233,0.2)" stroke-width="1" marker-end="url(#arr)"/>
         <line x1="380" y1="210" x2="380" y2="255" stroke="rgba(14,165,233,0.2)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- Protocol labels -->
         <text x="60" y="270" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7">SMB</text>
         <text x="100" y="270" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7">HTTP</text>
         <text x="200" y="270" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7">DNS</text>
         <text x="240" y="270" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7">SSH</text>
         <text x="340" y="270" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7">SMB</text>
         <text x="380" y="270" text-anchor="middle" fill="rgba(14,165,233,0.5)" font-family="IBM Plex Mono" font-size="7">HTTP</text>
+
+        <!-- Environment label -->
         <rect x="20" y="278" width="400" height="16" rx="2" fill="rgba(14,165,233,0.04)" stroke="rgba(14,165,233,0.1)" stroke-width="1"/>
         <text x="220" y="290" text-anchor="middle" fill="rgba(14,165,233,0.3)" font-family="IBM Plex Mono" font-size="7" letter-spacing="2">TARGET ENVIRONMENT — ZERO FOOTPRINT</text>
+
+        <!-- Animated data packets -->
         <circle id="pkt1" r="3" fill="rgba(14,165,233,0.8)" filter="url(#glow)"/>
         <circle id="pkt2" r="3" fill="rgba(14,165,233,0.8)" filter="url(#glow)"/>
         <circle id="pkt3" r="3" fill="rgba(14,165,233,0.8)" filter="url(#glow)"/>
@@ -637,25 +784,20 @@ RESPONSIVE BREAKPOINTS
     </div>
   </div>
 </div>
-```
 
   </section>
 
   <!-- POSITIONING BAR -->
 
-  <!-- FIX #3: subtitle contrast via --text2 -->
-
-  <div class="pos-bar">
-    <div class="pos-inner">
+  <div class="positioning-bar">
+    <div class="positioning-inner">
       <div class="pos-statement">Not a traffic generator. <em>Not a range builder.</em></div>
       <div class="pos-divider"></div>
       <div class="pos-sub">Animate is the orchestration layer for digital behavior across cyber environments.</div>
     </div>
   </div>
 
-  <!-- NUMBERS STRIP -->
-
-  <!-- FIX #4: label contrast via --text2 -->
+  <!-- NUMBERS -->
 
   <div class="numbers-strip">
     <div class="numbers-inner">
@@ -678,7 +820,7 @@ RESPONSIVE BREAKPOINTS
     </div>
   </div>
 
-  <!-- PROBLEM SECTION -->
+  <!-- PROBLEM -->
 
   <section class="section alt">
     <div class="wrap">
@@ -686,276 +828,330 @@ RESPONSIVE BREAKPOINTS
       <div class="problem-layout">
         <div>
           <div class="problem-statement">Your environment is built.<em>Now what?</em></div>
-          <p class="body-lg" style="margin-bottom:0.75rem">Infrastructure provisioning is solved. Every platform handles spinning up environments. What nobody solved is populating that environment with realistic network activity.</p>
+          <p class="body-lg" style="margin-bottom:0.5rem">Infrastructure provisioning is solved. Every platform handles spinning up environments. What nobody solved is populating that environment with realistic network activity.</p>
           <p class="body-md">That's where the manual grind begins — and where most programs hit their cost ceiling.</p>
-          <div class="prob-items">
-            <div class="prob-item">
-              <div class="prob-icon r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
-              <div class="prob-text"><h4>The 10:1 Engineering Gap</h4><p>10 hours of manual coding for every 1 hour of active exercise. Every new scenario is a new engineering project. Nothing is reusable.</p></div>
-            </div>
-            <div class="prob-item">
-              <div class="prob-icon a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-              <div class="prob-text"><h4>Architecture-Locked Logic</h4><p>Behavior is hardcoded to specific machines. Change the network, the scripts break. Every environment rebuild starts from zero.</p></div>
-            </div>
-            <div class="prob-item">
-              <div class="prob-icon b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-              <div class="prob-text"><h4>Sterile Environments</h4><p>Without realistic background traffic, there is no haystack. Anomalies are trivially obvious. Training produces false confidence. Validation means nothing.</p></div>
-            </div>
-            <div class="prob-item">
-              <div class="prob-icon r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></div>
-              <div class="prob-text"><h4>Compounding Operational Debt</h4><p>Scripts leave orphaned files and altered states. Environments degrade into spaghetti logic. Cleanup costs as much as the build.</p></div>
-            </div>
-          </div>
+
+      <div class="problem-items">
+        <div class="prob-item">
+          <div class="prob-icon r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+          <div class="prob-text"><h4>The 10:1 Engineering Gap</h4><p>10 hours of manual coding for every 1 hour of active exercise. Every new scenario is a new engineering project. Nothing is reusable.</p></div>
         </div>
-        <div>
-          <div class="stat-feature">
-            <div class="stat-big">10:1</div>
-            <h4>The Engineering Gap</h4>
-            <p>Every hour of active cyber exercise requires ten hours of manual engineering. This is the industry reality — and it makes scaling impossible without Animate.</p>
-            <!-- FIX #5: cost labels now use --text2 -->
-            <div class="cost-grid">
-              <div class="cost-cell"><div class="cost-val">$35k</div><div class="cost-lbl">Max maintenance cost per node per year</div></div>
-              <div class="cost-cell"><div class="cost-val">$15k</div><div class="cost-lbl">Min maintenance cost per node per year</div></div>
-            </div>
-            <div class="warn-bar">⚠ INDUSTRY BENCHMARK — Traditional Manual Workflow</div>
-          </div>
-          <div class="info-block">The industry mastered environment provisioning. What it never built was a standardized system for behavioral governance. Without a dedicated control plane, mission logic stays permanently tied to individual assets — and the rebuild cycle never ends.</div>
+        <div class="prob-item">
+          <div class="prob-icon a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+          <div class="prob-text"><h4>Architecture-Locked Logic</h4><p>Behavior is hardcoded to specific machines. Change the network, the scripts break. Every environment rebuild starts from zero.</p></div>
+        </div>
+        <div class="prob-item">
+          <div class="prob-icon b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="prob-text"><h4>Sterile Environments</h4><p>Without realistic background traffic, there is no haystack. Anomalies are trivially obvious. Training produces false confidence. Validation means nothing.</p></div>
+        </div>
+        <div class="prob-item">
+          <div class="prob-icon r"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></div>
+          <div class="prob-text"><h4>Compounding Operational Debt</h4><p>Scripts leave orphaned files and altered states. Environments degrade into spaghetti logic. Cleanup costs as much as the build.</p></div>
         </div>
       </div>
     </div>
+
+    <div>
+      <div class="stat-feature">
+        <div class="stat-big">10:1</div>
+        <h4>The Engineering Gap</h4>
+        <p>Every hour of active cyber exercise requires ten hours of manual engineering. This is the industry reality — and it makes scaling impossible without Animate.</p>
+        <div class="cost-grid">
+          <div class="cost-cell"><div class="cost-val">$35k</div><div class="cost-lbl">Max maintenance cost per node per year</div></div>
+          <div class="cost-cell"><div class="cost-val">$15k</div><div class="cost-lbl">Min maintenance cost per node per year</div></div>
+        </div>
+        <div class="warn-bar">⚠ INDUSTRY BENCHMARK — Traditional Manual Workflow</div>
+      </div>
+      <div style="margin-top:1.5rem;padding:1.5rem;background: var(---surface);border:1px solid var(---border);border-radius:4px">
+        <p class="body-md">The industry mastered environment provisioning. What it never built was a standardized system for behavioral governance. Without a dedicated control plane, mission logic stays permanently tied to individual assets — and the rebuild cycle never ends.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
   </section>
 
 </div><!-- /home -->
 
-<!-- ═══════════════════════════════════════
+<!-- ══════════════════════════════════
      WHAT IT IS
-═══════════════════════════════════════ -->
+══════════════════════════════════ -->
 
 <div id="what" class="page">
   <section class="section" style="padding-top:120px">
     <div class="wrap">
       <div class="eyebrow">What Animate Is</div>
       <h2 class="section-h">Centralized control. <em>Distributed execution.</em></h2>
-      <p class="body-lg" style="max-width:640px;margin-bottom:2.5rem">Animate replaces environment-specific traffic engineering with a single orchestration platform. Define behavior once — the system handles everything else across every environment you run.</p>
-      <div class="key-insight">
-        <p>Animate does not <em>"create realism."</em> It eliminates the operational burden required to achieve any desired level of realism — as defined by you. Realism is an output. Not the product.</p>
-      </div>
-      <div class="what-grid">
-        <div class="plane-card cp">
-          <div class="plane-tag">Control Plane</div>
-          <h4>The Scenario Studio</h4>
-          <p>Where operators define intent. Select behaviors, assign actors, set scheduling. The Orchestration Engine compiles your intent into execution manifests — no scripting, no SSH, no per-host configuration.</p>
-          <ul class="plane-list">
-            <li>Behavior definition and management</li>
-            <li>Actor identity and credential assignment</li>
-            <li>Scheduling and stochastic jitter control</li>
-            <li>Real-time Activity Grid feedback</li>
-            <li>Coordinates multiple environments simultaneously</li>
-          </ul>
-        </div>
-        <div class="plane-card ep">
-          <div class="plane-tag">Execution Plane</div>
-          <h4>Animate Hosts</h4>
-          <p>Distributed execution nodes deployed into your environment. They receive manifests from the Control Plane and fire native protocol traffic on the wire — as a guest, with zero footprint on target systems.</p>
-          <ul class="plane-list">
-            <li>Native protocol stimulation — SMB, HTTP, DNS, SSH</li>
-            <li>No agents installed on target kernels</li>
-            <li>Zero configuration drift on target assets</li>
-            <li>Horizontally scalable via node expansion</li>
-            <li>Pristine teardown — zero orphaned files</li>
-          </ul>
-        </div>
-      </div>
-      <div class="props-grid">
-        <div class="prop-card"><div class="prop-key">Centralized Control</div><div class="prop-val">One orchestration layer governs all execution across all environments simultaneously.</div></div>
-        <div class="prop-card"><div class="prop-key">Distributed Execution</div><div class="prop-val">Activity occurs locally within environments — governed globally from a single control plane.</div></div>
-        <div class="prop-card"><div class="prop-key">Environment Independence</div><div class="prop-val">No dependency on specific infrastructure. VMware, KVM, cloud, physical — substrate agnostic.</div></div>
-        <div class="prop-card"><div class="prop-key">Behavior-Driven Architecture</div><div class="prop-val">All activity derives from behaviors. Define once, execute across any node, environment, or scenario.</div></div>
-        <div class="prop-card"><div class="prop-key">Full Reusability</div><div class="prop-val">Behaviors and scenarios are portable. Build an asset once — it works everywhere, forever.</div></div>
-        <div class="prop-card"><div class="prop-key">Horizontal Scalability</div><div class="prop-val">Scaling requires no per-environment configuration. Add nodes, not engineers.</div></div>
-      </div>
+      <p class="body-lg" style="max-width:640px;margin-bottom:3rem">Animate replaces environment-specific traffic engineering with a single orchestration platform. Define behavior once — the system handles everything else across every environment you run.</p>
+
+  <div class="key-insight">
+    <p>Animate does not <em>"create realism."</em> It eliminates the operational burden required to achieve any desired level of realism — as defined by you. Realism is an output. Not the product.</p>
+  </div>
+
+  <div class="what-grid">
+    <div class="plane-card cp">
+      <div class="plane-tag">Control Plane</div>
+      <h4>The Scenario Studio</h4>
+      <p>Where operators define intent. Select behaviors, assign actors, set scheduling. The Orchestration Engine compiles your intent into execution manifests — no scripting, no SSH, no per-host configuration.</p>
+      <ul class="plane-list">
+        <li>Behavior definition and management</li>
+        <li>Actor identity and credential assignment</li>
+        <li>Scheduling and stochastic jitter control</li>
+        <li>Real-time Activity Grid feedback</li>
+        <li>Coordinates multiple environments simultaneously</li>
+      </ul>
     </div>
+    <div class="plane-card ep">
+      <div class="plane-tag">Execution Plane</div>
+      <h4>Animate Hosts</h4>
+      <p>Distributed execution nodes deployed into your environment. They receive manifests from the Control Plane and fire native protocol traffic on the wire — as a guest, with zero footprint on target systems.</p>
+      <ul class="plane-list">
+        <li>Native protocol stimulation — SMB, HTTP, DNS, SSH</li>
+        <li>No agents installed on target kernels</li>
+        <li>Zero configuration drift on target assets</li>
+        <li>Horizontally scalable via node expansion</li>
+        <li>Pristine teardown — zero orphaned files</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="props-grid">
+    <div class="prop-card"><div class="prop-key">Centralized Control</div><div class="prop-val">One orchestration layer governs all execution across all environments simultaneously.</div></div>
+    <div class="prop-card"><div class="prop-key">Distributed Execution</div><div class="prop-val">Activity occurs locally within environments — governed globally from a single control plane.</div></div>
+    <div class="prop-card"><div class="prop-key">Environment Independence</div><div class="prop-val">No dependency on specific infrastructure. VMware, KVM, cloud, physical — substrate agnostic.</div></div>
+    <div class="prop-card"><div class="prop-key">Behavior-Driven Architecture</div><div class="prop-val">All activity derives from behaviors. Define once, execute across any node, environment, or scenario.</div></div>
+    <div class="prop-card"><div class="prop-key">Full Reusability</div><div class="prop-val">Behaviors and scenarios are portable. Build an asset once — it works everywhere, forever.</div></div>
+    <div class="prop-card"><div class="prop-key">Horizontal Scalability</div><div class="prop-val">Scaling requires no per-environment configuration. Add nodes, not engineers.</div></div>
+  </div>
+</div>
+
   </section>
 </div>
 
-<!-- ═══════════════════════════════════════
+<!-- ══════════════════════════════════
      HOW IT WORKS
-═══════════════════════════════════════ -->
+══════════════════════════════════ -->
 
 <div id="how" class="page">
   <section class="section" style="padding-top:120px">
     <div class="wrap">
       <div class="eyebrow">How It Works</div>
       <h2 class="section-h">Five steps. <em>No scripts.</em></h2>
-      <p class="body-lg" style="max-width:640px;margin-bottom:3.5rem">From empty environment to live, realistic network activity — the entire workflow happens in the Scenario Studio without writing a single line of code.</p>
-      <div class="flow-track">
-        <div class="flow-node"><div class="flow-num">1</div><h4>Deploy Nodes</h4><p>Deploy Animate Host containers into your environment. They connect back to the Control Plane automatically via the Cyber Mesh.</p></div>
-        <div class="flow-node"><div class="flow-num">2</div><h4>Select Behaviors</h4><p>Choose network protocols from the behavior library.</p><div class="proto-pills"><span class="proto-pill">SMB</span><span class="proto-pill">HTTP</span><span class="proto-pill">DNS</span><span class="proto-pill">SSH</span></div></div>
-        <div class="flow-node"><div class="flow-num">3</div><h4>Assign Actors</h4><p>Create actor personas — identity, credentials, target servers, interaction patterns. Snap them to your nodes.</p></div>
-        <div class="flow-node"><div class="flow-num">4</div><h4>Set Scheduling</h4><p>Define personality packages — when behaviors fire, frequency, stochastic jitter for non-deterministic realism.</p></div>
-        <div class="flow-node"><div class="flow-num">5</div><h4>Hit Play</h4><p>Load pushes manifests to all nodes. Play executes. The Activity Grid shows live feedback from every container in real time.</p></div>
-      </div>
-      <div class="teardown-bar">
-        <div class="teardown-icon">↺</div>
-        <p><strong>Pristine teardown, built in.</strong> Hit Stop — behaviors unload from all nodes immediately. No orphaned files. No altered states. No re-imaging required. Your infrastructure is exactly as you left it, ready for the next run.</p>
-      </div>
-      <div class="haystack-block">
-        <div class="haystack-left">
-          <div class="haystack-quote">You can't find the needle<em>without the haystack.</em></div>
-        </div>
-        <div class="haystack-right">
-          <p>A sterile environment is a useless environment. Without realistic background traffic on the wire, there is no forensic context — anomalies are trivially obvious, trainees learn nothing, and validation results are meaningless.</p>
-          <p>Animate generates the haystack. The 90% background protocol noise that makes every scenario valid, every exercise meaningful, and every detection actually earned.</p>
-          <p>That's not realism as a feature. That's realism as the natural output of behavioral orchestration done correctly.</p>
-          <div class="btn-row" style="margin-top:1.5rem">
-            <span class="btn-p" onclick="goTo('contact')">Schedule a Pilot</span>
-            <span class="btn-g" onclick="goTo('what')">See the Architecture</span>
-          </div>
-        </div>
+      <p class="body-lg" style="max-width:640px;margin-bottom:4rem">From empty environment to live, realistic network activity — the entire workflow happens in the Scenario Studio without writing a single line of code.</p>
+
+  <div class="flow-track">
+    <div class="flow-node">
+      <div class="flow-num">1</div>
+      <h4>Deploy Nodes</h4>
+      <p>Deploy Animate Host containers into your environment. They connect back to the Control Plane automatically via the Cyber Mesh.</p>
+    </div>
+    <div class="flow-node">
+      <div class="flow-num">2</div>
+      <h4>Select Behaviors</h4>
+      <p>Choose network protocols from the behavior library.</p>
+      <div class="proto-pills">
+        <span class="proto-pill">SMB</span><span class="proto-pill">HTTP</span>
+        <span class="proto-pill">DNS</span><span class="proto-pill">SSH</span>
       </div>
     </div>
+    <div class="flow-node">
+      <div class="flow-num">3</div>
+      <h4>Assign Actors</h4>
+      <p>Create actor personas — identity, credentials, target servers, interaction patterns. Snap them to your nodes.</p>
+    </div>
+    <div class="flow-node">
+      <div class="flow-num">4</div>
+      <h4>Set Scheduling</h4>
+      <p>Define personality packages — when behaviors fire, frequency, stochastic jitter for non-deterministic realism.</p>
+    </div>
+    <div class="flow-node">
+      <div class="flow-num">5</div>
+      <h4>Hit Play</h4>
+      <p>Load pushes manifests to all nodes. Play executes. The Activity Grid shows live feedback from every container in real time.</p>
+    </div>
+  </div>
+
+  <div class="teardown-bar">
+    <div class="teardown-icon">↺</div>
+    <p><strong>Pristine teardown, built in.</strong> Hit Stop — behaviors unload from all nodes immediately. No orphaned files. No altered states. No re-imaging required. Your infrastructure is exactly as you left it, ready for the next run.</p>
+  </div>
+
+  <div class="haystack-block">
+    <div class="haystack-left">
+      <div class="haystack-quote">You can't find the needle<em>without the haystack.</em></div>
+    </div>
+    <div class="haystack-right">
+      <p>A sterile environment is a useless environment. Without realistic background traffic on the wire, there is no forensic context — anomalies are trivially obvious, trainees learn nothing, and validation results are meaningless.</p>
+      <p>Animate generates the haystack. The 90% background protocol noise that makes every scenario valid, every exercise meaningful, and every detection actually earned.</p>
+      <p>That's not realism as a feature. That's realism as the natural output of behavioral orchestration done correctly.</p>
+      <div class="btn-row">
+        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+        <span class="btn-ghost" onclick="goTo('what')">See the Architecture</span>
+      </div>
+    </div>
+  </div>
+</div>
+
   </section>
 </div>
 
-<!-- ═══════════════════════════════════════
+<!-- ══════════════════════════════════
      WHO IT'S FOR
-═══════════════════════════════════════ -->
+══════════════════════════════════ -->
 
 <div id="who" class="page">
   <section class="section" style="padding-top:120px">
     <div class="wrap">
       <div class="eyebrow">Who It's For</div>
       <h2 class="section-h">Three roles. <em>One platform.</em></h2>
-      <p class="body-lg" style="max-width:600px;margin-bottom:3rem">Animate solves a different problem for each role in the pipeline. Here's what the shift actually looks like.</p>
-      <div class="personas-grid">
-        <div class="persona-card">
-          <div class="persona-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-          <h3>Range Operator</h3>
-          <div class="persona-role">// Content Engineer · Day-to-Day User</div>
-          <div class="pain-block"><div class="pain-label">The Pain</div><p>Trapped in the 10:1 scripting ratio. Scripts hardcoded to specific VMs. Range pollution and spaghetti logic after every run. Constant re-imaging cycles.</p></div>
-          <div class="value-label">What Changes With Animate</div>
-          <div class="value-block"><p>Shift from scripting to configuration. Update one behavior and it cascades to every actor instantly. Stop the scenario — the range is clean. Every single time.</p></div>
-        </div>
-        <div class="persona-card">
-          <div class="persona-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-          <h3>Program Manager</h3>
-          <div class="persona-role">// Training Director · Budget Decision Maker</div>
-          <div class="pain-block"><div class="pain-label">The Pain</div><p>Excessive billable engineering hours for every scenario. High Side logistics nightmares. Weeks of delay for a single environment build. Disposable work with no reuse value.</p></div>
-          <div class="value-label">What Changes With Animate</div>
-          <div class="value-block"><p>75% labor reclamation. Scenarios in hours, not weeks. Behaviors become persistent assets — built once, reused across every environment indefinitely. More output, lower cost.</p></div>
-        </div>
-        <div class="persona-card">
-          <div class="persona-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <h3>Security Leader</h3>
-          <div class="persona-role">// CISO · Architect · Validation Lead</div>
-          <div class="pain-block"><div class="pain-label">The Pain</div><p>Agent-based tools re-engineered with every OS patch. Static PCAP replays trainees memorize. No forensic background activity. Sterile environments producing meaningless results.</p></div>
-          <div class="value-label">What Changes With Animate</div>
-          <div class="value-block"><p>Zero agents on target systems. Stochastic pattern-of-life generation that's different every run. Valid forensic context. Detections that are actually earned.</p></div>
-        </div>
-      </div>
-      <div class="not-a-block">
-        <h3>Not a traffic generator. <em>Not a range builder.</em></h3>
-        <p>Animate is the network activity layer that makes your environment work — regardless of what platform you use to build it. If you need network traffic in your cyber environment, we cover that piece simply, scalably, and without touching your infrastructure.</p>
-      </div>
+      <p class="body-lg" style="max-width:600px;margin-bottom:3.5rem">Animate solves a different problem for each role in the pipeline. Here's what the shift actually looks like.</p>
+
+  <div class="personas-grid">
+    <div class="persona-card">
+      <div class="persona-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <h3>Range Operator</h3>
+      <div class="persona-role">// Content Engineer · Day-to-Day User</div>
+      <div class="pain-block"><div class="pain-label">The Pain</div><p>Trapped in the 10:1 scripting ratio. Scripts hardcoded to specific VMs. Range pollution and spaghetti logic after every run. Constant re-imaging cycles.</p></div>
+      <div class="value-label">What Changes With Animate</div>
+      <div class="value-block"><p>Shift from scripting to configuration. Update one behavior and it cascades to every actor instantly. Stop the scenario — the range is clean. Every single time.</p></div>
     </div>
+
+    <div class="persona-card">
+      <div class="persona-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <h3>Program Manager</h3>
+      <div class="persona-role">// Training Director · Budget Decision Maker</div>
+      <div class="pain-block"><div class="pain-label">The Pain</div><p>Excessive billable engineering hours for every scenario. High Side logistics nightmares. Weeks of delay for a single environment build. Disposable work with no reuse value.</p></div>
+      <div class="value-label">What Changes With Animate</div>
+      <div class="value-block"><p>75% labor reclamation. Scenarios in hours, not weeks. Behaviors become persistent assets — built once, reused across every environment indefinitely. More output, lower cost.</p></div>
+    </div>
+
+    <div class="persona-card">
+      <div class="persona-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Security Leader</h3>
+      <div class="persona-role">// CISO · Architect · Validation Lead</div>
+      <div class="pain-block"><div class="pain-label">The Pain</div><p>Agent-based tools re-engineered with every OS patch. Static PCAP replays trainees memorize. No forensic background activity. Sterile environments producing meaningless results.</p></div>
+      <div class="value-label">What Changes With Animate</div>
+      <div class="value-block"><p>Zero agents on target systems. Stochastic pattern-of-life generation that's different every run. Valid forensic context. Detections that are actually earned.</p></div>
+    </div>
+  </div>
+
+  <div class="not-a-block">
+    <h3>Not a traffic generator. <em>Not a range builder.</em></h3>
+    <p>Animate is the network activity layer that makes your environment work — regardless of what platform you use to build it. If you need network traffic in your cyber environment, we cover that piece simply, scalably, and without touching your infrastructure.</p>
+  </div>
+</div>
+
   </section>
 </div>
 
-<!-- ═══════════════════════════════════════
+<!-- ══════════════════════════════════
      PROVEN IMPACT
-═══════════════════════════════════════ -->
+══════════════════════════════════ -->
 
 <div id="impact" class="page">
   <section class="section" style="padding-top:120px">
     <div class="wrap">
       <div class="eyebrow">Proven Impact</div>
       <h2 class="section-h">Mission-proven. <em>Institutionally validated.</em></h2>
-      <p class="body-lg" style="max-width:600px;margin-bottom:3rem">From air-gapped defense networks to global financial infrastructure — Animate has been tested where it counts.</p>
-      <div class="proof-grid">
-        <div class="proof-card">
-          <div class="proof-logo"><img src="assets/NAVY Logo.png" alt="U.S. Navy" onerror="this.parentElement.style.background='#1a2236';this.parentElement.innerHTML='<span style=\'font-family:Barlow Condensed,sans-serif;font-weight:800;color:#fff\'>USN</span>'"></div>
-          <h4>U.S. Navy / ManTech ST3P</h4>
-          <div class="proof-quote">"Simulated realistic human-like network activity"</div>
-          <div class="proof-result">🏆 Ranked <strong>Top 10 Technology</strong> for innovation and operational relevance across the program</div>
-        </div>
-        <div class="proof-card">
-          <div class="proof-logo"><img src="assets/PI Acheivers Logo.png" alt="PI Achievers" onerror="this.parentElement.style.background='#1a2236';this.parentElement.innerHTML='<span style=\'font-family:Barlow Condensed,sans-serif;font-weight:800;color:#fff\'>PIA</span>'"></div>
-          <h4>PI Achievers</h4>
-          <div class="proof-quote">"Cracked the code for network behavior"</div>
-          <div class="proof-result">⚡ New scenarios now spin up in <strong>hours instead of weeks</strong></div>
-        </div>
-        <div class="proof-card">
-          <div class="proof-logo"><img src="assets/FS-ISAC Logo.png" alt="FS-ISAC" onerror="this.parentElement.style.background='#1a2236';this.parentElement.innerHTML='<span style=\'font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:0.7rem;color:#fff\'>FS-ISAC</span>'"></div>
-          <h4>FS-ISAC</h4>
-          <div class="proof-quote">"Never seen anything like this."</div>
-          <div class="proof-result">🏦 Ransomware simulations deployed across <strong>200+ financial institutions</strong></div>
-        </div>
-      </div>
-      <div class="proof-cta">
-        <div class="proof-cta-left">
-          <h3>Ready to See It in Your Environment?</h3>
-          <p>We'll map Animate to your specific topology and show you exactly what it looks like in your environment — not a generic demo. A pilot built around your use case, your infrastructure, your team.</p>
-          <div class="btn-row">
-            <span class="btn-p" onclick="goTo('contact')">Schedule a Pilot</span>
-            <span class="btn-g" onclick="goTo('how')">See How It Works</span>
-          </div>
-        </div>
-        <div class="proof-cta-right">
-          <div class="metric-row"><div class="metric-big b">75%</div><div class="metric-desc">Labor<br>Reduction</div></div>
-          <div class="metric-row"><div class="metric-big a">10:1</div><div class="metric-desc">Gap<br>Eliminated</div></div>
-          <div class="metric-row"><div class="metric-big g">ZERO</div><div class="metric-desc">Agents on<br>Target Systems</div></div>
-        </div>
+      <p class="body-lg" style="max-width:600px;margin-bottom:3.5rem">From air-gapped defense networks to global financial infrastructure — Animate has been tested where it counts.</p>
+
+  <div class="proof-grid">
+    <div class="proof-card">
+      <div class="proof-logo"><img src="assets/NAVY Logo.png" alt="U.S. Navy" onerror="this.parentElement.style.background='#1a1a2e';this.parentElement.innerHTML='<span style=\'font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:0.9rem;color:#fff\'>USN</span>'"></div>
+      <h4>U.S. Navy / ManTech ST3P</h4>
+      <div class="proof-quote">"Simulated realistic human-like network activity"</div>
+      <div class="proof-result">🏆 Ranked <strong>Top 10 Technology</strong> for innovation and operational relevance across the program</div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-logo"><img src="assets/PI Acheivers Logo.png" alt="PI Achievers" onerror="this.parentElement.style.background='#1a1a2e';this.parentElement.innerHTML='<span style=\'font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:0.9rem;color:#fff\'>PIA</span>'"></div>
+      <h4>PI Achievers</h4>
+      <div class="proof-quote">"Cracked the code for network behavior"</div>
+      <div class="proof-result">⚡ New scenarios now spin up in <strong>hours instead of weeks</strong></div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-logo"><img src="assets/FS-ISAC Logo.png" alt="FS-ISAC" onerror="this.parentElement.style.background='#1a1a2e';this.parentElement.innerHTML='<span style=\'font-family:Barlow Condensed,sans-serif;font-weight:800;font-size:0.75rem;color:#fff\'>FS-ISAC</span>'"></div>
+      <h4>FS-ISAC</h4>
+      <div class="proof-quote">"Never seen anything like this."</div>
+      <div class="proof-result">🏦 Ransomware simulations deployed across <strong>200+ financial institutions</strong></div>
+    </div>
+  </div>
+
+  <div class="proof-cta">
+    <div class="proof-cta-left">
+      <h3>Ready to See It in Your Environment?</h3>
+      <p>We'll map Animate to your specific topology and show you exactly what it looks like in your environment — not a generic demo. A pilot built around your use case, your infrastructure, your team.</p>
+      <div class="btn-row">
+        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+        <span class="btn-ghost" onclick="goTo('how')">See How It Works</span>
       </div>
     </div>
-  </section>
-</div>
-
-<!-- ═══════════════════════════════════════
-     CONTACT
-═══════════════════════════════════════ -->
-
-<div id="contact" class="page">
-  <div class="contact-wrap">
-    <div class="contact-inner">
-      <div class="eyebrow" style="justify-content:center;margin-bottom:1.25rem">Get Started</div>
-      <h2 class="section-h" style="text-align:center;margin-bottom:0.5rem">Schedule Your <em>Pilot</em></h2>
-      <p class="body-md" style="text-align:center;max-width:500px;margin:0 auto 2.5rem">Tell us about your environment. We'll map Animate to your specific use case and show you exactly what it looks like in your infrastructure.</p>
-      <div class="contact-form">
-        <form action="https://formsubmit.co/info@animatecyber.com" method="POST">
-          <input type="hidden" name="_subject" value="Animate Cyber — Contact Form">
-          <input type="hidden" name="_template" value="table">
-          <div class="form-grid">
-            <div class="field"><label>First Name <span class="req">*</span></label><input type="text" name="First name" placeholder="Jane" required></div>
-            <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="Email" placeholder="jane@agency.gov" required></div>
-          </div>
-          <div class="form-grid">
-            <div class="field"><label>Role</label><input type="text" name="Position" placeholder="Range Operator, Program Manager, CISO..."></div>
-            <div class="field"><label>Organization</label><input type="text" name="Company" placeholder="Agency / Company"></div>
-          </div>
-          <div class="form-grid s1">
-            <div class="field"><label>Subject <span class="req">*</span></label><input type="text" name="Subject" placeholder="Schedule Pilot, Request Info, Partnership..." required></div>
-          </div>
-          <div class="form-grid s1">
-            <div class="field">
-              <label>Tell us about your environment</label>
-              <textarea name="Message" placeholder="What cyber environment are you running? What's the use case — training, testing, validation? What does your current traffic generation process look like?"></textarea>
-            </div>
-          </div>
-          <div class="form-submit"><button type="submit">Send Message →</button></div>
-        </form>
+    <div class="proof-cta-right">
+      <div class="metric-row">
+        <div class="metric-big b">75%</div>
+        <div class="metric-desc">Labor<br>Reduction</div>
       </div>
-      <div class="contact-meta">
-        <a href="mailto:info@animatecyber.com">📧 info@animatecyber.com</a>
-        <p>🌐 www.animatecyber.com</p>
-        <p style="margin-top:0.35rem">Serving federal agencies, defense contractors, and enterprise security teams</p>
+      <div class="metric-row">
+        <div class="metric-big a">10:1</div>
+        <div class="metric-desc">Gap<br>Eliminated</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-big g">ZERO</div>
+        <div class="metric-desc">Agents on<br>Target Systems</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
+  </section>
+</div>
 
-<!-- FIX #12: Tighter footer tagline -->
+<!-- ══════════════════════════════════
+     CONTACT
+══════════════════════════════════ -->
+
+<div id="contact" class="page">
+  <div class="contact-wrap">
+    <div class="contact-inner">
+      <div class="eyebrow" style="justify-content:center;margin-bottom:1.5rem">Get Started</div>
+      <h2 class="section-h" style="text-align:center;margin-bottom:0.5rem">Schedule Your <em>Pilot</em></h2>
+      <p class="body-md" style="text-align:center;max-width:500px;margin:0 auto 2.5rem">Tell us about your environment. We'll map Animate to your specific use case and show you exactly what it looks like in your infrastructure.</p>
+
+  <div class="contact-form">
+    <form action="https://formsubmit.co/info@animatecyber.com" method="POST">
+      <input type="hidden" name="_subject" value="Animate Cyber — Contact Form">
+      <input type="hidden" name="_template" value="table">
+      <div class="form-grid">
+        <div class="field"><label>First Name <span class="req">*</span></label><input type="text" name="First name" placeholder="Jane" required></div>
+        <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="Email" placeholder="jane@agency.gov" required></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>Role</label><input type="text" name="Position" placeholder="Range Operator, Program Manager, CISO..."></div>
+        <div class="field"><label>Organization</label><input type="text" name="Company" placeholder="Agency / Company"></div>
+      </div>
+      <div class="form-grid single">
+        <div class="field"><label>Subject <span class="req">*</span></label><input type="text" name="Subject" placeholder="Schedule Pilot, Request Info, Partnership..." required></div>
+      </div>
+      <div class="form-grid single">
+        <div class="field">
+          <label>Tell us about your environment</label>
+          <textarea name="Message" placeholder="What cyber environment are you running? What's the use case — training, testing, validation? What does your current traffic generation process look like?"></textarea>
+        </div>
+      </div>
+      <div class="form-submit"><button type="submit">Send Message →</button></div>
+    </form>
+  </div>
+
+  <div class="contact-meta">
+    <a href="mailto:info@animatecyber.com">📧 info@animatecyber.com</a>
+    <p>🌐 www.animatecyber.com</p>
+    <p style="margin-top:0.5rem">Serving federal agencies, defense contractors, and enterprise security teams</p>
+  </div>
+</div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
 
 <footer>
   <div class="footer-inner">
@@ -963,7 +1159,9 @@ RESPONSIVE BREAKPOINTS
       <img src="assets/Animate_Logo_2026_White.png" alt="Animate Cyber">
       <span class="footer-copy">© 2026 Animate Cyber. All rights reserved.</span>
     </div>
-    <div class="footer-right">The easy button for network traffic<br>in cyber environments.</div>
+    <div class="footer-right">
+      The easy button for deploying and controlling<br>network traffic in cyber environments.
+    </div>
   </div>
 </footer>
 
@@ -975,51 +1173,60 @@ function goTo(id) {
   if (t) { t.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
 }
 
-// ── FIX #1: Hamburger toggle
+// ── FIX #1: Mobile nav
 function toggleMobile() {
   const menu = document.getElementById('mobile-menu');
   const btn = document.getElementById('hamburger');
+  if (!menu || !btn) return;
   menu.classList.toggle('open');
   btn.classList.toggle('open');
 }
 function closeMobile() {
-  document.getElementById('mobile-menu').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
+  const menu = document.getElementById('mobile-menu');
+  const btn = document.getElementById('hamburger');
+  if (!menu || !btn) return;
+  menu.classList.remove('open');
+  btn.classList.remove('open');
 }
-// Close on outside tap
 document.addEventListener('click', function(e) {
   const menu = document.getElementById('mobile-menu');
   const btn = document.getElementById('hamburger');
+  if (!menu || !btn) return;
   if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target)) {
     closeMobile();
   }
 });
 
-// ── FIX #2: Audience switcher — default active on load
+// ── Audience switcher
 let audTimer;
 function aud(a) {
   document.querySelectorAll('.aud-pill').forEach(p => p.classList.remove('active'));
-  const pill = document.querySelector('[data-a="' + a + '"]');
-  if (pill) pill.classList.add('active');
+  document.querySelector(`[data-a="${a}"]`).classList.add('active');
   document.querySelectorAll('.hero-msg').forEach(m => m.classList.remove('active'));
-  const msg = document.getElementById('m-' + a);
-  if (msg) msg.classList.add('active');
+  document.getElementById(`m-${a}`).classList.add('active');
   if (audTimer) clearInterval(audTimer);
   audTimer = setInterval(autoAud, 9000);
 }
 const auds = ['ops','pm','ciso']; let ai = 0;
-function autoAud() { ai = (ai+1) % auds.length; aud(auds[ai]); }
-// Ensure default state on load
+function autoAud() { ai = (ai+1)%auds.length; aud(auds[ai]); }
 aud('ops');
 audTimer = setInterval(autoAud, 9000);
 
 // ── Architecture diagram animation
 (function() {
+  const svg = document.getElementById('arch-svg');
+  if (!svg) return;
+
   const paths = [
+    // Control plane center to host 1
     [{x:160,y:90},{x:80,y:155}],
+    // Control plane center to host 2
     [{x:220,y:90},{x:220,y:155}],
+    // Control plane center to host 3
     [{x:280,y:90},{x:360,y:155}],
   ];
+
+  const pkts = ['pkt1','pkt2','pkt3'];
   const statusMsgs = [
     '3 nodes active — executing behaviors',
     'node-01 → SMB traffic generated',
@@ -1034,12 +1241,15 @@ audTimer = setInterval(autoAud, 9000);
     const el = document.getElementById(pktId);
     if (!el) return;
     setTimeout(function loop() {
+      let t = 0;
       const dur = 1200;
       const start = performance.now();
       function step(now) {
-        const t = Math.min((now - start) / dur, 1);
-        el.setAttribute('cx', path[0].x + (path[1].x - path[0].x) * t);
-        el.setAttribute('cy', path[0].y + (path[1].y - path[0].y) * t);
+        t = Math.min((now - start) / dur, 1);
+        const x = path[0].x + (path[1].x - path[0].x) * t;
+        const y = path[0].y + (path[1].y - path[0].y) * t;
+        el.setAttribute('cx', x);
+        el.setAttribute('cy', y);
         el.setAttribute('opacity', t < 0.1 ? t*10 : t > 0.9 ? (1-t)*10 : 1);
         if (t < 1) requestAnimationFrame(step);
         else setTimeout(loop, 1800 + Math.random()*1200);
@@ -1052,16 +1262,22 @@ audTimer = setInterval(autoAud, 9000);
   animatePkt('pkt2', paths[1], 600);
   animatePkt('pkt3', paths[2], 1200);
 
+  // Pulse node borders
   const hosts = ['h1','h2','h3'];
   setInterval(function() {
-    const el = document.getElementById(hosts[Math.floor(Math.random()*3)]);
+    const idx = Math.floor(Math.random()*3);
+    const el = document.getElementById(hosts[idx]);
     if (el) {
       el.setAttribute('stroke','rgba(14,165,233,0.8)');
       el.setAttribute('stroke-width','1.5');
-      setTimeout(() => { el.setAttribute('stroke','rgba(14,165,233,0.3)'); el.setAttribute('stroke-width','1'); }, 400);
+      setTimeout(() => {
+        el.setAttribute('stroke','rgba(14,165,233,0.3)');
+        el.setAttribute('stroke-width','1');
+      }, 400);
     }
   }, 1100);
 
+  // Rotate status messages
   setInterval(function() {
     si = (si+1) % statusMsgs.length;
     const el = document.getElementById('status-text');

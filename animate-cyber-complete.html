@@ -31,8 +31,8 @@ html { scroll-behavior:smooth; font-size:16px; }
 --red:        #EF4444;
 --green:      #10B981;
 --text:       #F0F4F8;
---text2:      rgba(240,244,248,0.7);
---text3:      rgba(240,244,248,0.5);
+--text2:      rgba(240,244,248,0.82);
+--text3:      rgba(240,244,248,0.64);
 --font-display:'Barlow Condensed', sans-serif;
 --font-body:  'IBM Plex Sans', sans-serif;
 --font-mono:  'IBM Plex Mono', monospace;
@@ -51,7 +51,7 @@ body::after {
 content:'';
 position:fixed; inset:0;
 background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-pointer-events:none; z-index:9999; opacity:0.35;
+pointer-events:none; z-index:9999; opacity:0.22;
 }
 
 ::-webkit-scrollbar { width:3px; }
@@ -660,13 +660,6 @@ nav .nav-links{display:none}
     <div class="hero-grid"></div>
     <div class="hero-scan"></div>
 
-<div class="hero-inner">
-  <div>
-    <div class="hero-kicker">
-      <span class="kicker-dot"></span>
-      <span class="kicker-text">Behavioral Orchestration Platform</span>
-    </div>
-
     <div class="aud-pills">
       <button class="aud-pill active" data-a="ops" onclick="aud('ops')">Range Operators</button>
       <button class="aud-pill" data-a="pm" onclick="aud('pm')">Program Managers</button>
@@ -731,7 +724,7 @@ nav .nav-links{display:none}
         <rect x="120" y="20" width="200" height="70" rx="4" fill="rgba(14,165,233,0.08)" stroke="rgba(14,165,233,0.35)" stroke-width="1"/>
         <text x="220" y="42" text-anchor="middle" fill="rgba(14,165,233,0.6)" font-family="IBM Plex Mono" font-size="8" letter-spacing="2">CONTROL PLANE</text>
         <text x="220" y="60" text-anchor="middle" fill="#F0F4F8" font-family="IBM Plex Mono" font-size="9" font-weight="500">Scenario Studio</text>
-        <text x="220" y="74" text-anchor="middle" fill="rgba(240,244,248,0.4)" font-family="IBM Plex Mono" font-size="7">Orchestration Engine</text>
+        <text x="220" y="74" text-anchor="middle" fill="rgba(240,244,248,0.62)" font-family="IBM Plex Mono" font-size="7">Orchestration Engine</text>
 
         <!-- Boundary line -->
         <line x1="30" y1="115" x2="410" y2="115" stroke="rgba(14,165,233,0.15)" stroke-width="1" stroke-dasharray="4,4"/>
