@@ -650,22 +650,27 @@ nav .nav-links{display:none}
 <!-- ══════════════════════════════════
      HOME PAGE
 ══════════════════════════════════ -->
-
 <div id="home" class="page active">
-
-  <!-- HERO -->
 
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="hero-scan"></div>
 
+```
+<div class="hero-inner">
+  <div>
+    <div class="hero-kicker">
+      <span class="kicker-dot"></span>
+      <span class="kicker-text">Behavioral Orchestration Platform</span>
+    </div>
+
     <div class="aud-pills">
       <button class="aud-pill active" data-a="ops" onclick="aud('ops')">Range Operators</button>
       <button class="aud-pill" data-a="pm" onclick="aud('pm')">Program Managers</button>
       <button class="aud-pill" data-a="ciso" onclick="aud('ciso')">Security Leaders</button>
     </div>
-
+   
     <div id="m-ops" class="hero-msg active">
       <h1 class="hero-h1">The easy button<em>for network traffic.</em></h1>
       <p class="hero-sub">Deploy Animate Hosts, Define their behaviors, Hit play. Your environment comes alive with realistic, wire-level network activity — no scripts, no combursome agents, no rebuilds.</p>
