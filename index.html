@@ -575,14 +575,22 @@ border-radius:6px; padding:3rem; position:relative; overflow:hidden;
 .field { display:flex; flex-direction:column; gap:0.4rem; }
 .field label { font-family:var(--font-mono); font-size:0.62rem; font-weight:600; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; }
 .field label .req { color:var(--blue); }
-.field input, .field textarea {
+.field input, .field textarea, .field select {
 background: var(--bg3); border:1px solid var(--border2); border-radius:3px;
 padding:0.8rem 1rem; color:var(--text); font-family:var(--font-body); font-size:0.9rem;
 transition:border-color 0.2s, box-shadow 0.2s; outline:none;
 }
+.field select { cursor:pointer; width:100%; }
+.field select option { background:var(--bg3); color:var(--text); }
 .field input::placeholder, .field textarea::placeholder { color:var(--text3); }
-.field input:focus, .field textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-dim); }
+.field input:focus, .field textarea:focus, .field select:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-dim); }
 .field textarea { min-height:130px; resize:vertical; }
+.form-optional-section { margin-top:0; }
+.form-optional-heading {
+font-family:var(--font-mono); font-size:0.68rem; font-weight:600; color:var(--text2);
+letter-spacing:1.2px; text-transform:uppercase; margin:1.75rem 0 1rem; padding-top:1.25rem;
+border-top:1px solid var(--border3); line-height:1.4;
+}
 .form-submit { margin-top:2rem; }
 .form-submit button {
 font-family:var(--font-mono); font-size:0.75rem; font-weight:600;
@@ -1170,6 +1178,83 @@ nav .nav-links{display:none}
       <div class="form-grid single">
         <div class="field"><label>Message <span class="req">*</span></label><input type="text" name="Message" placeholder="Request a demo" required></div>
       </div>
+
+      <div class="form-optional-section">
+        <h3 class="form-optional-heading">Optional Details (Helps us tailor the demo)</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label>Environment Type</label>
+            <select name="Environment Type">
+              <option value="">Select...</option>
+              <option>Cyber Range</option>
+              <option>Training Lab</option>
+              <option>Detection / SOC Validation</option>
+              <option>Security Tool Testing</option>
+              <option>Red / Blue Exercises</option>
+              <option>OT / ICS Environment</option>
+              <option>Research Environment</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Primary Use Case</label>
+            <select name="Primary Use Case">
+              <option value="">Select...</option>
+              <option>Generate realistic background network activity</option>
+              <option>Simulate enterprise user behavior</option>
+              <option>Improve realism in training exercises</option>
+              <option>Validate security detections / SOC tooling</option>
+              <option>Test security products</option>
+              <option>Support large-scale cyber exercises</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Environment Size</label>
+            <select name="Environment Size">
+              <option value="">Select...</option>
+              <option>&lt; 50 hosts</option>
+              <option>50 – 200 hosts</option>
+              <option>200 – 1,000 hosts</option>
+              <option>1,000 – 5,000 hosts</option>
+              <option>5,000+ hosts</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Current Activity Generation</label>
+            <select name="Current Activity Generation">
+              <option value="">Select...</option>
+              <option>Manual scripts</option>
+              <option>PCAP replay</option>
+              <option>Traffic generators</option>
+              <option>Limited / static background activity</option>
+              <option>No activity generation today</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid single">
+          <div class="field">
+            <label>Timeline</label>
+            <select name="Timeline">
+              <option value="">Select...</option>
+              <option>Immediately</option>
+              <option>Within 3 months</option>
+              <option>Within 6 months</option>
+              <option>Just exploring</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid single">
+          <div class="field">
+            <label>Tell us about your environment</label>
+            <textarea name="Optional environment details" placeholder="What type of cyber environment are you running and what challenges do you have generating realistic network activity?"></textarea>
+          </div>
+        </div>
+      </div>
+
       <div class="form-submit"><button type="submit">Send Message →</button></div>
     </form>
   </div>
