@@ -660,48 +660,50 @@ nav .nav-links{display:none}
     <div class="hero-grid"></div>
     <div class="hero-scan"></div>
 
-    <div class="aud-pills">
-      <button class="aud-pill active" data-a="ops" onclick="aud('ops')">Range Operators</button>
-      <button class="aud-pill" data-a="pm" onclick="aud('pm')">Program Managers</button>
-      <button class="aud-pill" data-a="ciso" onclick="aud('ciso')">Security Leaders</button>
-    </div>
+    <div class="hero-inner">
+      <div>
+        <div class="aud-pills">
+          <button class="aud-pill active" data-a="ops" onclick="aud('ops')">Range Operators</button>
+          <button class="aud-pill" data-a="pm" onclick="aud('pm')">Program Managers</button>
+          <button class="aud-pill" data-a="ciso" onclick="aud('ciso')">Security Leaders</button>
+        </div>
 
-    <div id="m-ops" class="hero-msg active">
-      <h1 class="hero-h1">The easy button<em>for network traffic.</em></h1>
-      <p class="hero-sub">Deploy Animate Hosts, Define their behaviors, Hit play. Your environment comes alive with realistic, wire-level network activity — no scripts, no combursome agents, no rebuilds.</p>
-      <div class="btn-row">
-        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
-        <span class="btn-ghost" onclick="goTo('how')">See How It Works</span>
+        <div id="m-ops" class="hero-msg active">
+          <h1 class="hero-h1">The easy button<em>for network traffic.</em></h1>
+          <p class="hero-sub">Deploy Animate Hosts, Define their behaviors, Hit play. Your environment comes alive with realistic, wire-level network activity — no scripts, no combursome agents, no rebuilds.</p>
+          <div class="btn-row">
+            <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+            <span class="btn-ghost" onclick="goTo('how')">See How It Works</span>
+          </div>
+        </div>
+
+        <div id="m-pm" class="hero-msg">
+          <h1 class="hero-h1">Kill the<em>10:1 engineering gap.</em></h1>
+          <p class="hero-sub">Scenarios that took weeks are ready in hours. Behaviors become persistent assets — built once, reused indefinitely across every environment you run.</p>
+          <div class="btn-row">
+            <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+            <span class="btn-ghost" onclick="goTo('who')">See the ROI</span>
+          </div>
+        </div>
+
+        <div id="m-ciso" class="hero-msg">
+          <h1 class="hero-h1">Zero agents.<em>Zero operational debt.</em></h1>
+          <p class="hero-sub">Animate operates as a guest on the wire. No software on target systems. No configuration drift. Stop it when you're done — infrastructure stays pristine.</p>
+          <div class="btn-row">
+            <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
+            <span class="btn-ghost" onclick="goTo('what')">See the Architecture</span>
+          </div>
+        </div>
+
+        <div class="manifesto">
+          <span class="manifesto-item"><strong>Define once</strong></span>
+          <span class="manifesto-item"><strong>Execute anywhere</strong></span>
+          <span class="manifesto-item"><strong>Scale without rebuilding</strong></span>
+        </div>
       </div>
-    </div>
 
-    <div id="m-pm" class="hero-msg">
-      <h1 class="hero-h1">Kill the<em>10:1 engineering gap.</em></h1>
-      <p class="hero-sub">Scenarios that took weeks are ready in hours. Behaviors become persistent assets — built once, reused indefinitely across every environment you run.</p>
-      <div class="btn-row">
-        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
-        <span class="btn-ghost" onclick="goTo('who')">See the ROI</span>
-      </div>
-    </div>
-
-    <div id="m-ciso" class="hero-msg">
-      <h1 class="hero-h1">Zero agents.<em>Zero operational debt.</em></h1>
-      <p class="hero-sub">Animate operates as a guest on the wire. No software on target systems. No configuration drift. Stop it when you're done — infrastructure stays pristine.</p>
-      <div class="btn-row">
-        <span class="btn-primary" onclick="goTo('contact')">Schedule a Pilot</span>
-        <span class="btn-ghost" onclick="goTo('what')">See the Architecture</span>
-      </div>
-    </div>
-
-    <div class="manifesto">
-      <span class="manifesto-item"><strong>Define once</strong></span>
-      <span class="manifesto-item"><strong>Execute anywhere</strong></span>
-      <span class="manifesto-item"><strong>Scale without rebuilding</strong></span>
-    </div>
-  </div>
-
-  <!-- Live Architecture Diagram -->
-  <div class="arch-diagram">
+      <!-- Live Architecture Diagram -->
+      <div class="arch-diagram">
     <div class="arch-header">
       <div class="arch-dot" style="background:#FF5F56"></div>
       <div class="arch-dot" style="background:#FFBD2E;margin-left:5px"></div>
@@ -782,8 +784,8 @@ nav .nav-links{display:none}
       <div class="status-dot"></div>
       <span class="status-text" id="status-text">3 nodes active — executing behaviors</span>
     </div>
-  </div>
-</div>
+      </div>
+    </div>
 
   </section>
 
@@ -862,7 +864,7 @@ nav .nav-links{display:none}
         </div>
         <div class="warn-bar">⚠ INDUSTRY BENCHMARK — Traditional Manual Workflow</div>
       </div>
-      <div style="margin-top:1.5rem;padding:1.5rem;background: var(---surface);border:1px solid var(---border);border-radius:4px">
+      <div style="margin-top:1.5rem;padding:1.5rem;background: var(--surface);border:1px solid var(--border);border-radius:4px">
         <p class="body-md">The industry mastered environment provisioning. What it never built was a standardized system for behavioral governance. Without a dedicated control plane, mission logic stays permanently tied to individual assets — and the rebuild cycle never ends.</p>
       </div>
     </div>
