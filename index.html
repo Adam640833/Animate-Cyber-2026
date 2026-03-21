@@ -219,8 +219,28 @@ animation:scan 8s ease-in-out infinite;
 .hero-inner {
 max-width:1400px; margin:0 auto; width:100%;
 position:relative; z-index:1;
-display:grid; grid-template-columns:1fr 520px; gap:5rem; align-items:center;
+display:flex; flex-direction:column;
+align-items:stretch;
+gap:clamp(1.25rem,3vw,2.75rem);
 }
+.hero-stage-banner {
+text-align:center;
+max-width:min(100%,56rem);
+margin:0 auto;
+width:100%;
+padding:0 0.5rem;
+box-sizing:border-box;
+}
+.hero-main-row {
+display:grid;
+grid-template-columns:1fr min(520px,100%);
+gap:clamp(2rem,4vw,5rem);
+align-items:center;
+width:100%;
+min-width:0;
+}
+.hero-copy { min-width:0; }
+.hero-diagram { min-width:0; }
 
 .hero-kicker {
 display:flex; align-items:center; gap:0.75rem; margin-bottom:2rem;
@@ -229,16 +249,17 @@ display:flex; align-items:center; gap:0.75rem; margin-bottom:2rem;
 @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(14,165,233,0.4)} 50%{opacity:0.7;box-shadow:0 0 0 6px rgba(14,165,233,0)} }
 .kicker-text { font-family:var(--font-mono); font-size:0.68rem; font-weight:500; color:var(--blue); letter-spacing:2.5px; text-transform:uppercase; }
 
-/* Stage-setting headline block */
+/* Stage-setting headline block (centered banner, fluid type) */
 .hero-stage-title {
 font-family:var(--font-display);
-font-size:clamp(2rem,4.4vw,4.8rem);
+font-size:clamp(1.65rem,2.8vw + 0.85rem,4.75rem);
 font-weight:800;
-line-height:0.9;
-letter-spacing:1px;
+line-height:0.92;
+letter-spacing:clamp(0.5px,0.15vw,1px);
 text-transform:uppercase;
 color:var(--text);
-margin-bottom:0.7rem;
+margin-bottom:0.65rem;
+text-wrap:balance;
 }
 .hero-stage-title em {
 font-style:normal;
@@ -246,14 +267,20 @@ color:var(--blue);
 }
 .hero-stage-sub {
 font-family:var(--font-mono);
-font-size:clamp(0.72rem,1.15vw,1.25rem);
+font-size:clamp(0.62rem,0.55vw + 0.55rem,1.12rem);
 font-weight:600;
-letter-spacing:3px;
+letter-spacing:clamp(1.5px,0.35vw,3px);
 text-transform:uppercase;
 color:var(--text);
-margin-bottom:2rem;
+margin:0;
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+align-items:center;
+gap:0.35rem 0.65rem;
+text-wrap:balance;
 }
-.hero-stage-sub .dot { opacity:0.4; margin:0 0.7rem; }
+.hero-stage-sub .dot { opacity:0.4; margin:0 0.35rem; }
 .hero-stage-sub em { font-style:normal; color:var(--blue); }
 
 /* Audience switcher */
@@ -617,8 +644,8 @@ footer { background: var(--bg3); border-top:1px solid var(--border); padding:3re
 RESPONSIVE
 ═══════════════════════════════════════════════ */
 @media(max-width:1100px){
-.hero-inner{grid-template-columns:1fr}
-.arch-diagram{display:none}
+.hero-main-row{grid-template-columns:1fr;gap:2rem}
+.hero-diagram{display:none}
 }
 @media(max-width:900px){
 .problem-layout,.what-grid,.haystack-block,.proof-cta{grid-template-columns:1fr}
@@ -696,10 +723,12 @@ nav .nav-links{display:none}
     <div class="hero-scan"></div>
 
     <div class="hero-inner">
-      <div>
+      <div class="hero-stage-banner">
         <div class="hero-stage-title">Scale Without <em>Rebuilding</em></div>
-        <div class="hero-stage-sub">Define Once | <em>Execute Anywhere</em></div>
-
+        <div class="hero-stage-sub">Define Once <span class="dot">|</span> <em>Execute Anywhere</em></div>
+      </div>
+      <div class="hero-main-row">
+        <div class="hero-copy">
         <div class="aud-pills">
           <button class="aud-pill active" data-a="ops" onclick="aud('ops')">Range Operators</button>
           <button class="aud-pill" data-a="pm" onclick="aud('pm')">Program Managers</button>
@@ -733,9 +762,9 @@ nav .nav-links{display:none}
           </div>
         </div>
 
-      </div>
+        </div>
 
-      <!-- Live Architecture Diagram -->
+        <div class="hero-diagram">
       <div class="arch-diagram">
     <div class="arch-header">
       <div class="arch-dot" style="background:#FF5F56"></div>
@@ -817,6 +846,8 @@ nav .nav-links{display:none}
       <div class="status-dot"></div>
       <span class="status-text" id="status-text">3 nodes active — executing behaviors</span>
     </div>
+      </div>
+        </div>
       </div>
     </div>
 
